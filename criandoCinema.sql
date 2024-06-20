@@ -107,6 +107,39 @@ CREATE TABLE IF NOT EXISTS `reserva_cinema`.`ingresso` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+ALTER TABLE `reserva_cinema`.`assentos` 
+RENAME TO  `reserva_cinema`.`assento` ;
+
+ALTER TABLE `reserva_cinema`.`filmes` 
+RENAME TO  `reserva_cinema`.`filme` ;
+
+ALTER TABLE `reserva_cinema`.`filme` 
+DROP COLUMN `sala`;
+
+ALTER TABLE `reserva_cinema`.`filme` 
+CHANGE COLUMN `horario` `horario` TIME NOT NULL ;
+
+ALTER TABLE `reserva_cinema`.`filme` 
+CHANGE COLUMN `sinopse` `sinopse` VARCHAR(600) NULL DEFAULT NULL ;
+
+ALTER TABLE `reserva_cinema`.`filme` 
+CHANGE COLUMN `id` `id` INT NOT NULL AUTO_INCREMENT ;
+
+ALTER TABLE `reserva_cinema`.`assento` 
+DROP FOREIGN KEY `fk_assentos_filmes1`;
+ALTER TABLE `reserva_cinema`.`assento` 
+CHANGE COLUMN `filmes_id` `FK_filmes_id` INT NOT NULL ;
+ALTER TABLE `reserva_cinema`.`assento` 
+ADD CONSTRAINT `fk_assentos_filmes1`
+  FOREIGN KEY (`FK_filmes_id`)
+  REFERENCES `mydb`.`filmes` (`id`);
+  
+  ALTER TABLE `reserva_cinema`.`assento` 
+CHANGE COLUMN `id` `id` VARCHAR(3) NOT NULL ;
+
+ALTER TABLE `reserva_cinema`.`assento` 
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`id`);
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
