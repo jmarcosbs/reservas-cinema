@@ -1,50 +1,33 @@
--- MySQL Workbench Forward Engineering
-
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `reserva_cinema`;
+CREATE SCHEMA IF NOT EXISTS `reserva_cinema` DEFAULT CHARACTER SET utf8 ;
 USE `reserva_cinema` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`filmes`
+-- Table `reserva_cinema`.`filme`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `reserva_cinema`.`filmes` (
-  `id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `reserva_cinema`.`filme` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `titulo` VARCHAR(70) NOT NULL,
-  `sinopse` VARCHAR(200) NULL,
+  `sinopse` VARCHAR(500) NULL,
   `valor_ingresso` FLOAT NOT NULL,
-  `sala` INT NOT NULL,
-  `horario` TIMESTAMP NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+  `horario` TIME NULL,
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`usuario`
+-- Table `reserva_cinema`.`usuario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `reserva_cinema`.`usuario` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(70) NOT NULL,
   `email` VARCHAR(30) NOT NULL,
   `senha` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`compra`
+-- Table `reserva_cinema`.`compra`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `reserva_cinema`.`compra` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -55,18 +38,16 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`assentos`
+-- Table `reserva_cinema`.`assento`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `reserva_cinema`.`assentos` (
-  `id` INT NOT NULL,
-  `filmes_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `filmes_id`),
-  INDEX `fk_assentos_filmes1_idx` (`filmes_id` ASC) VISIBLE,
-  CONSTRAINT `fk_assentos_filmes1`
-    FOREIGN KEY (`filmes_id`)
-    REFERENCES `mydb`.`filmes` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+CREATE TABLE IF NOT EXISTS `reserva_cinema`.`assento` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `codigo_assento` VARCHAR(3) NOT NULL,
+  `FK_filme_id` INT NOT NULL,
+  `ocupado` TINYINT NOT NULL,
+  PRIMARY KEY (`id`),
+    FOREIGN KEY (`FK_filme_id`)
+    REFERENCES `reserva_cinema`.`filme` (`id`))
 ENGINE = InnoDB;
 
 
@@ -77,70 +58,12 @@ CREATE TABLE IF NOT EXISTS `reserva_cinema`.`ingresso` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `FK_usuario_id` INT NOT NULL,
   `FK_compra_id` INT NOT NULL,
-  `FK_filmes_id` INT NOT NULL,
-  `FK_assentos_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `FK_usuario_id`, `FK_compra_id`, `FK_filmes_id`, `FK_assentos_id`),
-  INDEX `fk_ingresso_usuario1_idx` (`FK_usuario_id` ASC) VISIBLE,
-  INDEX `fk_ingresso_compra1_idx` (`FK_compra_id` ASC) VISIBLE,
-  INDEX `fk_ingresso_filmes1_idx` (`FK_filmes_id` ASC) VISIBLE,
-  INDEX `fk_ingresso_assentos1_idx` (`FK_assentos_id` ASC) VISIBLE,
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-  CONSTRAINT `fk_ingresso_usuario1`
-    FOREIGN KEY (`FK_usuario_id`)
-    REFERENCES `mydb`.`usuario` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ingresso_compra1`
-    FOREIGN KEY (`FK_compra_id`)
-    REFERENCES `mydb`.`compra` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ingresso_filmes1`
-    FOREIGN KEY (`FK_filmes_id`)
-    REFERENCES `mydb`.`filmes` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ingresso_assentos1`
-    FOREIGN KEY (`FK_assentos_id`)
-    REFERENCES `mydb`.`assentos` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  `FK_filme_id` INT NOT NULL,
+  `FK_assento_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`FK_usuario_id`) REFERENCES `reserva_cinema`.`usuario` (`id`),
+  FOREIGN KEY (`FK_compra_id`) REFERENCES `reserva_cinema`.`compra` (`id`),
+  FOREIGN KEY (`FK_filme_id`) REFERENCES `reserva_cinema`.`filme` (`id`),
+  FOREIGN KEY (`FK_assento_id`) REFERENCES `reserva_cinema`.`assento` (`id`)
+);
 
-ALTER TABLE `reserva_cinema`.`assentos` 
-RENAME TO  `reserva_cinema`.`assento` ;
-
-ALTER TABLE `reserva_cinema`.`filmes` 
-RENAME TO  `reserva_cinema`.`filme` ;
-
-ALTER TABLE `reserva_cinema`.`filme` 
-DROP COLUMN `sala`;
-
-ALTER TABLE `reserva_cinema`.`filme` 
-CHANGE COLUMN `horario` `horario` TIME NOT NULL ;
-
-ALTER TABLE `reserva_cinema`.`filme` 
-CHANGE COLUMN `sinopse` `sinopse` VARCHAR(600) NULL DEFAULT NULL ;
-
-ALTER TABLE `reserva_cinema`.`filme` 
-CHANGE COLUMN `id` `id` INT NOT NULL AUTO_INCREMENT ;
-
-ALTER TABLE `reserva_cinema`.`assento` 
-DROP FOREIGN KEY `fk_assentos_filmes1`;
-ALTER TABLE `reserva_cinema`.`assento` 
-CHANGE COLUMN `filmes_id` `FK_filmes_id` INT NOT NULL ;
-ALTER TABLE `reserva_cinema`.`assento` 
-ADD CONSTRAINT `fk_assentos_filmes1`
-  FOREIGN KEY (`FK_filmes_id`)
-  REFERENCES `mydb`.`filmes` (`id`);
-  
-  ALTER TABLE `reserva_cinema`.`assento` 
-CHANGE COLUMN `id` `id` VARCHAR(3) NOT NULL ;
-
-ALTER TABLE `reserva_cinema`.`assento` 
-DROP PRIMARY KEY,
-ADD PRIMARY KEY (`id`);
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
