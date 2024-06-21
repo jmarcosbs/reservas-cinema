@@ -72,19 +72,19 @@ public class Main {
 		textField_1.setColumns(10);
 		
 		JPanel panelFilmes = new JPanel();
-		panel.add(panelFilmes, "name_2824654620200");
+		panel.add(panelFilmes, "painelFilmes");
 		panelFilmes.setLayout(null);
 		
 		JPanel panelAssentos = new JPanel();
-		panel.add(panelAssentos, "name_2853478477800");
+		panel.add(panelAssentos, "painelAssentos");
 		panelAssentos.setLayout(null);
 		
 		JPanel panelPagamento = new JPanel();
-		panel.add(panelPagamento, "name_2894830004000");
+		panel.add(panelPagamento, "painelPagamento");
 		panelPagamento.setLayout(null);
 		
 		JPanel panelFinalizar = new JPanel();
-		panel.add(panelFinalizar, "name_2963587884400");
+		panel.add(panelFinalizar, "painelFinalizar");
 		panelFinalizar.setLayout(null);
 	}
 }
