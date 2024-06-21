@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.JRadioButton;
 
 public class Main {
 
@@ -83,8 +84,32 @@ public class Main {
 		panel.add(panelPagamento, "painelPagamento");
 		panelPagamento.setLayout(null);
 		
+		JRadioButton rdbtnPix = new JRadioButton("Pix");
+		rdbtnPix.setBounds(194, 99, 109, 23);
+		panelPagamento.add(rdbtnPix);
+		
+		JButton btnPgAvancar = new JButton("Avançar");
+		btnPgAvancar.setBounds(407, 311, 89, 23);
+		panelPagamento.add(btnPgAvancar);
+		
+		JButton btnPgVoltar = new JButton("Voltar");
+		btnPgVoltar.setBounds(308, 311, 89, 23);
+		panelPagamento.add(btnPgVoltar);
+		
+		JRadioButton rdbtnCredito = new JRadioButton("Credito");
+		rdbtnCredito.setBounds(194, 125, 109, 23);
+		panelPagamento.add(rdbtnCredito);
+		
+		JRadioButton rdbtnDebito = new JRadioButton("Debito");
+		rdbtnDebito.setBounds(194, 156, 109, 23);
+		panelPagamento.add(rdbtnDebito);
+		
 		JPanel panelFinalizar = new JPanel();
 		panel.add(panelFinalizar, "painelFinalizar");
 		panelFinalizar.setLayout(null);
+		
+		JButton btnComprarDeNovo = new JButton("Comprar Novamente");
+		btnComprarDeNovo.setBounds(318, 309, 183, 23);
+		panelFinalizar.add(btnComprarDeNovo);
 	}
 }
