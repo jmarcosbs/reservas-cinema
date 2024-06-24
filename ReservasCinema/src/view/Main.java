@@ -9,13 +9,15 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JTextField;
-<<<<<<< HEAD:ReservasCinema/src/view/Main.java
 import javax.swing.JRadioButton;
-=======
 import javax.swing.JLabel;
 import javax.swing.JTextPane;
 import java.awt.Font;
->>>>>>> origin/teste:ReservasCinema/src/view/main.java
+import javax.swing.SwingConstants;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Main {
 
@@ -61,22 +63,76 @@ public class Main {
 		panel.setLayout(new CardLayout(0, 0));
 		
 		JPanel panelEntrar = new JPanel();
-		panel.add(panelEntrar, "name_2824621832500");
+		panel.add(panelEntrar, "painelEntrar");
 		panelEntrar.setLayout(null);
 		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(195, 207, 149, 23);
-		panelEntrar.add(btnNewButton);
+		JButton btnEntrarAvancar = new JButton("Avançar");
+		btnEntrarAvancar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				CardLayout c1 = (CardLayout) panel.getLayout();
+				c1.show(panel, "painelFilmes");
+				btnEntrarAvancar.setEnabled(false);
+				
+			}
+		});
+		btnEntrarAvancar.setEnabled(false);
+		btnEntrarAvancar.setBounds(425, 368, 89, 23);
+		panelEntrar.add(btnEntrarAvancar);
+		
+		JButton btnLogin = new JButton("Login");
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//logar(retorna booleano logado ou não e avança para o próximo card layout)
+				
+				//boolean podeAvancar = true;
+				
+				//if (podeAvancar == true) {
+					btnEntrarAvancar.setEnabled(true);
+				//}
+				
+			}	
+		});
+		btnLogin.setBounds(180, 235, 149, 23);
+		panelEntrar.add(btnLogin);
 		
 		textField = new JTextField();
-		textField.setBounds(195, 154, 149, 20);
+		textField.setBounds(180, 182, 149, 20);
 		panelEntrar.add(textField);
 		textField.setColumns(10);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(195, 98, 149, 20);
+		textField_1.setBounds(180, 126, 149, 20);
 		panelEntrar.add(textField_1);
 		textField_1.setColumns(10);
+		
+		JLabel lblEntrar = new JLabel("Entrar");
+		lblEntrar.setBounds(35, 27, 62, 20);
+		panelEntrar.add(lblEntrar);
+		
+		
+		JLabel lblEmail = new JLabel("Email");
+		lblEmail.setBounds(179, 101, 46, 14);
+		panelEntrar.add(lblEmail);
+		
+		JLabel lblSenha = new JLabel("Senha");
+		lblSenha.setBounds(180, 157, 46, 14);
+		panelEntrar.add(lblSenha);
+		
+		JLabel lblSemCadastro = new JLabel("Ainda não tenho cadastro");
+		lblSemCadastro.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				NovoCadastro telaCadastro = new NovoCadastro();
+				telaCadastro.setVisible(true);
+				
+			}
+		});
+		lblSemCadastro.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSemCadastro.setBounds(180, 297, 149, 14);
+		panelEntrar.add(lblSemCadastro);
 		
 		JPanel panelFilmes = new JPanel();
 		panel.add(panelFilmes, "painelFilmes");
@@ -84,54 +140,62 @@ public class Main {
 		
 		JLabel lblNewLabel = new JLabel("Divertidamente");
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 12));
-		lblNewLabel.setBounds(119, 19, 130, 31);
+		lblNewLabel.setBounds(79, 107, 130, 31);
 		panelFilmes.add(lblNewLabel);
 		
 		JTextPane txtpnRileyUma = new JTextPane();
 		txtpnRileyUma.setFont(new Font("Times New Roman", Font.PLAIN, 11));
 		txtpnRileyUma.setText("Riley é uma garota divertida de 11 anos de idade, que deve enfrentar mudanças importantes em sua vida quando seus pais decidem deixar a sua cidade natal, no estado de Minnesota, para viver em San Francisco.\r\n");
-		txtpnRileyUma.setBounds(119, 47, 387, 49);
+		txtpnRileyUma.setBounds(79, 135, 387, 49);
 		panelFilmes.add(txtpnRileyUma);
 		
-		JTextPane txtpnRileyUma_1 = new JTextPane();
-		txtpnRileyUma_1.setText("Bad Boys: Até o Fim é o quarto filme da icônica saga de ação estrelada por Will Smith e Martin Lawrence, iniciada em 1995 com Os Bad Boys, dirigido por Michael Bay. Desta vez, o longa conta com Adil El Arbi e Bilall Fallah na direção e o roteiro fica por conta de Chris Bremnerirá.");
-		txtpnRileyUma_1.setBounds(119, 125, 387, 62);
-		panelFilmes.add(txtpnRileyUma_1);
-		
-		JLabel lblNewLabel_1 = new JLabel("Bad Boys: Até o Fim");
-		lblNewLabel_1.setFont(new Font("Times New Roman", Font.BOLD, 11));
-		lblNewLabel_1.setBounds(119, 100, 130, 31);
-		panelFilmes.add(lblNewLabel_1);
-		
-		JTextPane txtpnRileyUma_2 = new JTextPane();
-		txtpnRileyUma_2.setText("Planeta dos Macacos: O Reinado dá continuidade à saga dos primatas inteligentes, situando-se em um futuro distante após os eventos de Guerra pelo Planeta dos Macacos de 2017.");
-		txtpnRileyUma_2.setBounds(119, 224, 387, 49);
-		panelFilmes.add(txtpnRileyUma_2);
-		
-		JLabel lblNewLabel_2 = new JLabel("Planeta dos Macacos: O Reinado\r\n");
-		lblNewLabel_2.setBounds(119, 198, 245, 31);
-		panelFilmes.add(lblNewLabel_2);
-		
-		JTextPane txtpnRileyUma_2_1 = new JTextPane();
-		txtpnRileyUma_2_1.setText("Gary Johnson (Glen Powell) é o assassino profissional mais procurado de Nova Orleans. No entanto, nem tudo é o que parece: para os seus clientes, Gary passa como um assassino de aluguel comum, mas, na verdade, ele trabalha para a polícia.");
-		txtpnRileyUma_2_1.setBounds(119, 309, 387, 62);
-		panelFilmes.add(txtpnRileyUma_2_1);
-		
-		JLabel lblNewLabel_2_1 = new JLabel("Assassino por Acaso");
-		lblNewLabel_2_1.setBounds(119, 284, 130, 31);
-		panelFilmes.add(lblNewLabel_2_1);
-		
 		JButton btnFilmeAvancar = new JButton("Avançar");
+		btnFilmeAvancar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				CardLayout c1 = (CardLayout) panel.getLayout();
+				c1.show(panel, "painelAssentos");
+				
+			}
+		});
 		btnFilmeAvancar.setBounds(417, 382, 89, 23);
 		panelFilmes.add(btnFilmeAvancar);
 		
-		JButton btnFilmeVoltar = new JButton("Voltar");
-		btnFilmeVoltar.setBounds(27, 382, 89, 23);
-		panelFilmes.add(btnFilmeVoltar);
+		JLabel lblFilmes = new JLabel("Filmes");
+		lblFilmes.setBounds(27, 27, 46, 14);
+		panelFilmes.add(lblFilmes);
 		
 		JPanel panelAssentos = new JPanel();
 		panel.add(panelAssentos, "painelAssentos");
 		panelAssentos.setLayout(null);
+		
+		JLabel lblAssentos = new JLabel("Assentos");
+		lblAssentos.setBounds(43, 33, 46, 14);
+		panelAssentos.add(lblAssentos);
+		
+		JButton btnFilmeVoltar_1 = new JButton("Voltar");
+		btnFilmeVoltar_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				CardLayout c1 = (CardLayout) panel.getLayout();
+				c1.show(panel, "painelFilmes");
+				
+			}
+		});
+		btnFilmeVoltar_1.setBounds(31, 368, 89, 23);
+		panelAssentos.add(btnFilmeVoltar_1);
+		
+		JButton btnFilmeAvancar_1 = new JButton("Avançar");
+		btnFilmeAvancar_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				CardLayout c1 = (CardLayout) panel.getLayout();
+				c1.show(panel, "painelPagamento");
+				
+			}
+		});
+		btnFilmeAvancar_1.setBounds(421, 368, 89, 23);
+		panelAssentos.add(btnFilmeAvancar_1);
 		
 		JPanel panelPagamento = new JPanel();
 		panel.add(panelPagamento, "painelPagamento");
@@ -142,10 +206,26 @@ public class Main {
 		panelPagamento.add(rdbtnPix);
 		
 		JButton btnPgAvancar = new JButton("Avançar");
+		btnPgAvancar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				CardLayout c1 = (CardLayout) panel.getLayout();
+				c1.show(panel, "painelFinalizar");
+				
+			}
+		});
 		btnPgAvancar.setBounds(407, 311, 89, 23);
 		panelPagamento.add(btnPgAvancar);
 		
 		JButton btnPgVoltar = new JButton("Voltar");
+		btnPgVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				CardLayout c1 = (CardLayout) panel.getLayout();
+				c1.show(panel, "painelAssentos");
+				
+			}
+		});
 		btnPgVoltar.setBounds(308, 311, 89, 23);
 		panelPagamento.add(btnPgVoltar);
 		
@@ -157,12 +237,26 @@ public class Main {
 		rdbtnDebito.setBounds(194, 156, 109, 23);
 		panelPagamento.add(rdbtnDebito);
 		
+		JLabel lblPagamento = new JLabel("Pagamento");
+		lblPagamento.setBounds(50, 49, 109, 14);
+		panelPagamento.add(lblPagamento);
+		
 		JPanel panelFinalizar = new JPanel();
 		panel.add(panelFinalizar, "painelFinalizar");
 		panelFinalizar.setLayout(null);
 		
 		JButton btnComprarDeNovo = new JButton("Comprar Novamente");
+		btnComprarDeNovo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout c1 = (CardLayout) panel.getLayout();
+				c1.show(panel, "painelFilmes");
+			}
+		});
 		btnComprarDeNovo.setBounds(318, 309, 183, 23);
 		panelFinalizar.add(btnComprarDeNovo);
+		
+		JLabel lblFinalizar = new JLabel("Finalizar");
+		lblFinalizar.setBounds(51, 44, 46, 14);
+		panelFinalizar.add(lblFinalizar);
 	}
 }
