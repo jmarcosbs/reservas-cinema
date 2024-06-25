@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import entidades.Usuario;
 
 public class UsuarioDao {
@@ -68,6 +67,60 @@ public class UsuarioDao {
 		}
 		
 		return 0;
+	}
+	
+	public Usuario LogarUsuario(String email, String senha) {
+		
+		//Função que retorna um usuário caso ele for encontrado, se não for encontrado retorna um usuário nulo
+		
+		String sql = "SELECT * FROM reserva_cinema.usuario WHERE email = ?";
+		
+		Usuario usuarioLogado;
+		
+		try {
+			
+			Connection con = getConexao();
+			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setString(1, email);
+			
+			ResultSet rs = pst.executeQuery();
+			
+			
+			if (rs.next() == false) {
+				System.out.println("Usuario não encontrado");
+				usuarioLogado = null;
+			} else {
+				
+				String senhaCadastrada = rs.getString(4);
+				
+				if (senhaCadastrada.equals(senha)) {
+					
+					int idCadastrado = rs.getInt(1);
+					String nomeCadastrado = rs.getString(2);
+					String emailCadastrado = rs.getString(3);
+					System.out.println("Login aprovado");
+					
+					usuarioLogado = new Usuario(idCadastrado, nomeCadastrado, emailCadastrado, senhaCadastrada);
+					
+				} else {
+					System.out.println("Senha incorreta.");
+					usuarioLogado = null;
+					
+			}
+			
+			}
+			
+			rs.close();
+			pst.close();
+			con.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			usuarioLogado = null;
+		}
+		
+		return usuarioLogado;
+	
 	}
 	
 	

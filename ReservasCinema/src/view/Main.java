@@ -5,25 +5,38 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JLabel;
-import javax.swing.JTextPane;
-import java.awt.Font;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+
+import dao.FilmeDao;
+import dao.UsuarioDao;
+import entidades.Usuario;
+import entidades.Filme;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JPasswordField;
+import javax.swing.ImageIcon;
+import javax.swing.ButtonGroup;
 
 public class Main {
 
 	private JFrame frame;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField txtEmail;
+	private JPasswordField pssSenha;
+	UsuarioDao usuarioDao = new UsuarioDao();
+	FilmeDao filmeDao = new FilmeDao();
+	Usuario usuarioLogado;
+	List<Filme> listaDeFilmes = filmeDao.listarFilmes();
+	Filme filmeSelecionado = null;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
+	
 
 	/**
 	 * Launch the application.
@@ -74,9 +87,9 @@ public class Main {
 				c1.show(panel, "painelFilmes");
 				btnEntrarAvancar.setEnabled(false);
 				
+				
 			}
 		});
-		btnEntrarAvancar.setEnabled(false);
 		btnEntrarAvancar.setBounds(425, 368, 89, 23);
 		panelEntrar.add(btnEntrarAvancar);
 		
@@ -84,28 +97,31 @@ public class Main {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				//logar(retorna booleano logado ou não e avança para o próximo card layout)
+				//Transformando char[] senha em String
+				String senha = new String (pssSenha.getPassword());
 				
-				//boolean podeAvancar = true;
+				// Obtendo texto do campo email
+				String email = txtEmail.getText();
 				
-				//if (podeAvancar == true) {
+				usuarioLogado = usuarioDao.LogarUsuario(email, senha);
+				
+				if (usuarioLogado != null) {
+					JOptionPane.showMessageDialog(null, "Bem-vindo");
 					btnEntrarAvancar.setEnabled(true);
-				//}
-				
+				} else {
+					JOptionPane.showMessageDialog(null, "Informações inválidas");
+				}
+			
+
 			}	
 		});
 		btnLogin.setBounds(180, 235, 149, 23);
 		panelEntrar.add(btnLogin);
 		
-		textField = new JTextField();
-		textField.setBounds(180, 182, 149, 20);
-		panelEntrar.add(textField);
-		textField.setColumns(10);
-		
-		textField_1 = new JTextField();
-		textField_1.setBounds(180, 126, 149, 20);
-		panelEntrar.add(textField_1);
-		textField_1.setColumns(10);
+		txtEmail = new JTextField();
+		txtEmail.setBounds(180, 126, 149, 20);
+		panelEntrar.add(txtEmail);
+		txtEmail.setColumns(10);
 		
 		JLabel lblEntrar = new JLabel("Entrar");
 		lblEntrar.setBounds(35, 27, 62, 20);
@@ -134,36 +150,116 @@ public class Main {
 		lblSemCadastro.setBounds(180, 297, 149, 14);
 		panelEntrar.add(lblSemCadastro);
 		
+		pssSenha = new JPasswordField();
+		pssSenha.setBounds(180, 192, 149, 20);
+		panelEntrar.add(pssSenha);
+		
 		JPanel panelFilmes = new JPanel();
 		panel.add(panelFilmes, "painelFilmes");
 		panelFilmes.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Divertidamente");
-		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 12));
-		lblNewLabel.setBounds(79, 107, 130, 31);
-		panelFilmes.add(lblNewLabel);
 		
-		JTextPane txtpnRileyUma = new JTextPane();
-		txtpnRileyUma.setFont(new Font("Times New Roman", Font.PLAIN, 11));
-		txtpnRileyUma.setText("Riley é uma garota divertida de 11 anos de idade, que deve enfrentar mudanças importantes em sua vida quando seus pais decidem deixar a sua cidade natal, no estado de Minnesota, para viver em San Francisco.\r\n");
-		txtpnRileyUma.setBounds(79, 135, 387, 49);
-		panelFilmes.add(txtpnRileyUma);
+		JLabel lblFilmes = new JLabel("Filmes");
+		lblFilmes.setBounds(27, 27, 46, 14);
+		panelFilmes.add(lblFilmes);
+		
+		JLabel lblFilme1 = new JLabel("New label");
+		lblFilme1.setIcon(new ImageIcon("C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\divertidamente.png"));
+		lblFilme1.setBounds(10, 88, 109, 171);
+		panelFilmes.add(lblFilme1);
+		
+		JLabel lblFilme2 = new JLabel("New label");
+		lblFilme2.setIcon(new ImageIcon("C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\bad.png"));
+		lblFilme2.setBounds(143, 88, 109, 171);
+		panelFilmes.add(lblFilme2);
+		
+		JLabel lblFilme3 = new JLabel("New label");
+		lblFilme3.setIcon(new ImageIcon("C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\planeta.png"));
+		lblFilme3.setBounds(282, 88, 109, 171);
+		panelFilmes.add(lblFilme3);
+		
+		JLabel lblFilme4 = new JLabel("New label");
+		lblFilme4.setIcon(new ImageIcon("C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\assassino.png"));
+		lblFilme4.setBounds(417, 88, 109, 171);
+		panelFilmes.add(lblFilme4);
 		
 		JButton btnFilmeAvancar = new JButton("Avançar");
+		btnFilmeAvancar.setEnabled(false);
 		btnFilmeAvancar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				CardLayout c1 = (CardLayout) panel.getLayout();
 				c1.show(panel, "painelAssentos");
+		
 				
 			}
 		});
+	
+		
 		btnFilmeAvancar.setBounds(417, 382, 89, 23);
 		panelFilmes.add(btnFilmeAvancar);
 		
-		JLabel lblFilmes = new JLabel("Filmes");
-		lblFilmes.setBounds(27, 27, 46, 14);
-		panelFilmes.add(lblFilmes);
+		JRadioButton rdbtnFilme1 = new JRadioButton(listaDeFilmes.get(0).getTitulo());
+		rdbtnFilme1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdbtnFilme1.isSelected()) {
+					filmeSelecionado = listaDeFilmes.get(0);
+					btnFilmeAvancar.setEnabled(true);
+				} 
+			}
+		});
+		buttonGroup.add(rdbtnFilme1);
+		
+		rdbtnFilme1.setBounds(20, 270, 109, 23);
+		panelFilmes.add(rdbtnFilme1);
+		
+		
+		JRadioButton rdbtnFilme2 = new JRadioButton(listaDeFilmes.get(1).getTitulo());
+		rdbtnFilme2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdbtnFilme2.isSelected()) {
+					filmeSelecionado = listaDeFilmes.get(1);
+					btnFilmeAvancar.setEnabled(true);
+				} 
+			}
+		});
+		buttonGroup.add(rdbtnFilme2);
+		rdbtnFilme2.setBounds(143, 270, 109, 23);
+		panelFilmes.add(rdbtnFilme2);
+		
+		JRadioButton rdbtnFilme3 = new JRadioButton(listaDeFilmes.get(2).getTitulo());
+		rdbtnFilme3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdbtnFilme3.isSelected()) {
+					filmeSelecionado = listaDeFilmes.get(2);
+					btnFilmeAvancar.setEnabled(true);
+				} 
+			}
+		});
+		buttonGroup.add(rdbtnFilme3);
+		rdbtnFilme3.setBounds(282, 270, 109, 23);
+		panelFilmes.add(rdbtnFilme3);
+		
+		JRadioButton rdbtnFilme4 = new JRadioButton(listaDeFilmes.get(3).getTitulo());
+		rdbtnFilme4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if (rdbtnFilme4.isSelected()) {
+					filmeSelecionado = listaDeFilmes.get(3);
+					btnFilmeAvancar.setEnabled(true);
+				} 
+				
+				
+			}
+		});
+		buttonGroup.add(rdbtnFilme4);
+		rdbtnFilme4.setBounds(417, 270, 109, 23);
+		panelFilmes.add(rdbtnFilme4);
+		
+		
+		JLabel lblPreço = new JLabel("R$34");
+		lblPreço.setBounds(27, 300, 46, 14);
+		panelFilmes.add(lblPreço);
 		
 		JPanel panelAssentos = new JPanel();
 		panel.add(panelAssentos, "painelAssentos");
