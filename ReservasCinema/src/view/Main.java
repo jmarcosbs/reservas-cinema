@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.CardLayout;
+import java.awt.Color;
+
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
@@ -20,6 +22,7 @@ import entidades.Assento;
 import entidades.Filme;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Iterator;
 import java.util.List;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -44,9 +47,14 @@ public class Main {
 	Usuario usuarioLogado;
 	List<Filme> listaDeFilmes = filmeDao.listarFilmes();
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private static Filme filmeSelecionado = null;
+	private Filme filmeSelecionado = null;
 	List<Assento> listaAssentos;
 	private JPanel panelEntrar;
+	private JTextField textField;
+	private JPanel panelAssentos;
+	JPanel panel = new JPanel();
+
+
 	
 
 	/**
@@ -83,14 +91,43 @@ public class Main {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 539, 415);
 		frame.getContentPane().add(panel);
 		panel.setLayout(new CardLayout(0, 0));
 		
+		criarEntrar();
+		
+
+		
+
+
+	}
+
+	
+	public Assento retornaAssento(List<Assento> listaDeAssentos, Filme filmeSelecionado, int indice) {
+		
+		Assento assento = null;
+		
+		if (filmeSelecionado != null) {
+			
+			assento = listaDeAssentos.get(indice);
+			
+		}
+		
+		return assento;
+		
+	}
+	
+	public void criarEntrar() {
+		
 		panelEntrar = new JPanel();
 		panel.add(panelEntrar, "painelEntrar");
 		panelEntrar.setLayout(null);
+		
+		JLabel lblEntrar = new JLabel("Entrar");
+		lblEntrar.setBounds(35, 27, 62, 20);
+		panelEntrar.add(lblEntrar);
+		
 		
 		JButton btnEntrarAvancar = new JButton("Avançar");
 		btnEntrarAvancar.addActionListener(new ActionListener() {
@@ -98,8 +135,7 @@ public class Main {
 				
 				CardLayout c1 = (CardLayout) panel.getLayout();
 				c1.show(panel, "painelFilmes");
-				btnEntrarAvancar.setEnabled(false);
-				
+				criarFilmes();
 				
 			}
 		});
@@ -138,9 +174,7 @@ public class Main {
 		panelEntrar.add(txtEmail);
 		txtEmail.setColumns(10);
 		
-		JLabel lblEntrar = new JLabel("Entrar");
-		lblEntrar.setBounds(35, 27, 62, 20);
-		panelEntrar.add(lblEntrar);
+		
 		
 		
 		JLabel lblEmail = new JLabel("Email");
@@ -169,10 +203,14 @@ public class Main {
 		pssSenha.setBounds(180, 192, 149, 20);
 		panelEntrar.add(pssSenha);
 		
+	}
+	
+	
+	public void criarFilmes() {
+		
 		JPanel panelFilmes = new JPanel();
 		panel.add(panelFilmes, "painelFilmes");
 		panelFilmes.setLayout(null);
-		
 		
 		JLabel lblFilmes = new JLabel("Filmes");
 		lblFilmes.setBounds(27, 27, 46, 14);
@@ -205,6 +243,7 @@ public class Main {
 				
 				CardLayout c1 = (CardLayout) panel.getLayout();
 				c1.show(panel, "painelAssentos");
+				criarAssentos();
 
 				
 			}
@@ -279,148 +318,74 @@ public class Main {
 		JLabel lblPreço = new JLabel("R$34");
 		lblPreço.setBounds(27, 300, 46, 14);
 		panelFilmes.add(lblPreço);
+	}
+	
+	
+	public void criarAssentos() {
 		
-		JPanel panelAssentos = new JPanel();
-		panelAssentos.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				
-				
-				
-			}
-		});
+		panelAssentos = new JPanel();
 		panel.add(panelAssentos, "painelAssentos");
 		panelAssentos.setLayout(null);
 		
-		JLabel lblAssentos = new JLabel("Assentos");
-		lblAssentos.setBounds(43, 33, 46, 14);
-		panelAssentos.add(lblAssentos);
+		JToggleButton[][] botoesAssento = new JToggleButton[4][4];
 		
-		
-		JButton btnFilmeVoltar_1 = new JButton("Voltar");
-		btnFilmeVoltar_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				CardLayout c1 = (CardLayout) panel.getLayout();
-				c1.show(panel, "painelFilmes");
-				
-			}
-		});
-		btnFilmeVoltar_1.setBounds(31, 368, 89, 23);
-		panelAssentos.add(btnFilmeVoltar_1);
-		
-		JButton btnFilmeAvancar_1 = new JButton("Avançar");
-		btnFilmeAvancar_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				CardLayout c1 = (CardLayout) panel.getLayout();
-				c1.show(panel, "painelPagamento");
-				
-			}
-		});
-		btnFilmeAvancar_1.setBounds(421, 368, 89, 23);
-		panelAssentos.add(btnFilmeAvancar_1);
-		
-		
-		
-		panelAssentos.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentShown(ComponentEvent e) {
-				
-				if (filmeSelecionado != null) {
-				listaAssentos = assentoDao.listaAssentos(filmeSelecionado);
-				System.out.println(filmeSelecionado.getTitulo());
-				
-				JToggleButton tglbtnA1 = new JToggleButton(listaAssentos.get(0).getCodigoAssento());
-				tglbtnA1.setFont(new Font("Tahoma", Font.PLAIN, 8));
-				tglbtnA1.setBounds(131, 80, 45, 45);
-				panelAssentos.add(tglbtnA1);
-				
-				JToggleButton tglbtnA2 = new JToggleButton("A2");
-				tglbtnA2.setFont(new Font("Tahoma", Font.PLAIN, 8));
-				tglbtnA2.setBounds(186, 80, 45, 45);
-				panelAssentos.add(tglbtnA2);
-				
-				JToggleButton tglbtnA3 = new JToggleButton("A3");
-				tglbtnA3.setFont(new Font("Tahoma", Font.PLAIN, 8));
-				tglbtnA3.setBounds(241, 80, 45, 45);
-				panelAssentos.add(tglbtnA3);
-				
-				JToggleButton tglbtnA4 = new JToggleButton("A4");
-				tglbtnA4.setFont(new Font("Tahoma", Font.PLAIN, 8));
-				tglbtnA4.setBounds(296, 80, 45, 45);
-				panelAssentos.add(tglbtnA4);
-				
-				JToggleButton tglbtnB1 = new JToggleButton("B1");
-				tglbtnB1.setFont(new Font("Tahoma", Font.PLAIN, 8));
-				tglbtnB1.setBounds(131, 136, 45, 45);
-				panelAssentos.add(tglbtnB1);
-				
-				JToggleButton tglbtnB2 = new JToggleButton("B2");
-				tglbtnB2.setFont(new Font("Tahoma", Font.PLAIN, 8));
-				tglbtnB2.setBounds(186, 136, 45, 45);
-				panelAssentos.add(tglbtnB2);
-				
-				JToggleButton tglbtnB3 = new JToggleButton("B3");
-				tglbtnB3.setFont(new Font("Tahoma", Font.PLAIN, 8));
-				tglbtnB3.setBounds(241, 136, 45, 45);
-				panelAssentos.add(tglbtnB3);
-				
-				JToggleButton tglbtnB4 = new JToggleButton("B4");
-				tglbtnB4.setFont(new Font("Tahoma", Font.PLAIN, 8));
-				tglbtnB4.setBounds(296, 136, 45, 45);
-				panelAssentos.add(tglbtnB4);
-				
-				JToggleButton tglbtnC1 = new JToggleButton("C1");
-				tglbtnC1.setFont(new Font("Tahoma", Font.PLAIN, 8));
-				tglbtnC1.setBounds(131, 192, 45, 45);
-				panelAssentos.add(tglbtnC1);
-				
-				JToggleButton tglbtnC2 = new JToggleButton("C2");
-				tglbtnC2.setFont(new Font("Tahoma", Font.PLAIN, 8));
-				tglbtnC2.setBounds(186, 192, 45, 45);
-				panelAssentos.add(tglbtnC2);
-				
-				JToggleButton tglbtnC3 = new JToggleButton("C3");
-				tglbtnC3.setFont(new Font("Tahoma", Font.PLAIN, 8));
-				tglbtnC3.setBounds(241, 192, 45, 45);
-				panelAssentos.add(tglbtnC3);
-				
-				JToggleButton tglbtnC4 = new JToggleButton("C4");
-				tglbtnC4.setFont(new Font("Tahoma", Font.PLAIN, 8));
-				tglbtnC4.setBounds(296, 192, 45, 45);
-				panelAssentos.add(tglbtnC4);
-				
-				JToggleButton tglbtnD1 = new JToggleButton("D1");
-				tglbtnD1.setFont(new Font("Tahoma", Font.PLAIN, 8));
-				tglbtnD1.setBounds(131, 248, 45, 45);
-				panelAssentos.add(tglbtnD1);
-				
-				JToggleButton tglbtnD2 = new JToggleButton("D2");
-				tglbtnD2.setFont(new Font("Tahoma", Font.PLAIN, 8));
-				tglbtnD2.setBounds(186, 248, 45, 45);
-				panelAssentos.add(tglbtnD2);
-				
-				JToggleButton tglbtnD3 = new JToggleButton("D3");
-				tglbtnD3.setFont(new Font("Tahoma", Font.PLAIN, 8));
-				tglbtnD3.setBounds(241, 248, 45, 45);
-				panelAssentos.add(tglbtnD3);
-				
-				JToggleButton tglbtnD4 = new JToggleButton("D4");
-				tglbtnD4.setFont(new Font("Tahoma", Font.PLAIN, 8));
-				tglbtnD4.setBounds(296, 248, 45, 45);
-				panelAssentos.add(tglbtnD4);
-				
-				}
-				
+		if (filmeSelecionado != null) {
+			listaAssentos = assentoDao.listaAssentos(filmeSelecionado);
+			System.out.println(filmeSelecionado.getTitulo());
 			
-			}
-		});
-		
-
-		
-		
+			
+			//Adiciona os botões representando os assentos
+			int k = 0;
+			
+			for (int i = 0; i < 4; i++) {
 				
+				
+				for (int j = 0; j < 4; j++) {
+
+					String nomeAssento = String.valueOf(listaAssentos.get(k++).getCodigoAssento());
+					JToggleButton btn = new JToggleButton(nomeAssento);
+					btn.setFont(new Font("Tahoma", Font.PLAIN, 8));
+					btn.setBounds(131 + (55*j), 80 + (i*56), 45, 45);
+					botoesAssento[i][j] = btn;
+					panelAssentos.add(btn);
+
+				}
+
+				
+			}
+			
+			JButton btnFilmeVoltar_1 = new JButton("Voltar");
+			btnFilmeVoltar_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					CardLayout c1 = (CardLayout) panel.getLayout();
+					c1.show(panel, "painelFilmes");
+					
+				}
+			});
+			btnFilmeVoltar_1.setBounds(31, 368, 89, 23);
+			panelAssentos.add(btnFilmeVoltar_1);
+			
+			JButton btnFilmeAvancar_1 = new JButton("Avançar");
+			btnFilmeAvancar_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+
+					CardLayout c1 = (CardLayout) panel.getLayout();
+					c1.show(panel, "painelPagamento");
+					criarPagamento();
+				}
+			});
+			btnFilmeAvancar_1.setBounds(421, 368, 89, 23);
+			panelAssentos.add(btnFilmeAvancar_1);
+			
+
+				
+		}
+			
+
+	}	
+	
+	public void criarPagamento() {
 		
 		JPanel panelPagamento = new JPanel();
 		panel.add(panelPagamento, "painelPagamento");
@@ -437,6 +402,15 @@ public class Main {
 				CardLayout c1 = (CardLayout) panel.getLayout();
 				c1.show(panel, "painelFinalizar");
 				
+				JToggleButton tglbtnA1 = new JToggleButton("Teste");
+				tglbtnA1.setBackground(Color.GREEN);				
+				tglbtnA1.setForeground(Color.BLUE);				
+				tglbtnA1.setFont(new Font("Tahoma", Font.PLAIN, 8));
+				tglbtnA1.setBounds(131, 80, 45, 45);
+				panelAssentos.add(tglbtnA1);
+				
+				
+				
 			}
 		});
 		btnPgAvancar.setBounds(407, 311, 89, 23);
@@ -449,8 +423,15 @@ public class Main {
 				CardLayout c1 = (CardLayout) panel.getLayout();
 				c1.show(panel, "painelAssentos");
 				
+				criarFinalizar();
+								
+				
 			}
 		});
+	
+		
+		
+		
 		btnPgVoltar.setBounds(308, 311, 89, 23);
 		panelPagamento.add(btnPgVoltar);
 		
@@ -465,6 +446,11 @@ public class Main {
 		JLabel lblPagamento = new JLabel("Pagamento");
 		lblPagamento.setBounds(50, 49, 109, 14);
 		panelPagamento.add(lblPagamento);
+		
+		
+	}
+	
+	public void criarFinalizar() {
 		
 		JPanel panelFinalizar = new JPanel();
 		panel.add(panelFinalizar, "painelFinalizar");
@@ -484,43 +470,8 @@ public class Main {
 		lblFinalizar.setBounds(51, 44, 46, 14);
 		panelFinalizar.add(lblFinalizar);
 		
+	}
 
-	}
 	
-	public Filme getFilmeSelecionado(JRadioButton rdbtnFilme1, JRadioButton rdbtnFilme2, JRadioButton rdbtnFilme3, JRadioButton rdbtnFilme4) {
-		
-		Filme filmeSelecionado;
-		
-		if(rdbtnFilme1.isSelected()) {
-			filmeSelecionado = listaDeFilmes.get(0);
-		} else if(rdbtnFilme2.isSelected()) {
-			filmeSelecionado = listaDeFilmes.get(1);
-		} else if(rdbtnFilme3.isSelected()) {
-			filmeSelecionado = listaDeFilmes.get(2);
-		} else if(rdbtnFilme4.isSelected()) {
-			filmeSelecionado = listaDeFilmes.get(3);
-		} else {
-			filmeSelecionado = null;
-		}
-		
-		return filmeSelecionado;
-		
-	}
-	
-	public Assento retornaAssento(List<Assento> listaDeAssentos, Filme filmeSelecionado, int indice) {
-		
-		Assento assento = null;
-		
-		if (filmeSelecionado != null) {
-			
-			assento = listaDeAssentos.get(indice);
-			
-		}
-		
-		return assento;
-		
-	}
-	public JPanel getPanelEntrar() {
-		return panelEntrar;
-	}
 }
+	
