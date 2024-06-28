@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS `reserva_cinema`.`compra` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `valor_compra` FLOAT NOT NULL,
   `data_compra` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `forma_pagamento` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 

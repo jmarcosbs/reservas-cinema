@@ -7,22 +7,24 @@ public class Compra {
 	private int id;
 	private float valorCompra;
 	private Timestamp dataCompra;
+	private String formaPagamento;
 	
 	public Compra() {
 		super();
 	}
 
-	public Compra(float valorCompra, Timestamp dataCompra) {
+	public Compra(float valorCompra, String formaPagamento) {
 		super();
 		this.valorCompra = valorCompra;
-		this.dataCompra = dataCompra;
+		this.formaPagamento = formaPagamento;
 	}
 
-	public Compra(int id, float valorCompra, Timestamp dataCompra) {
+	public Compra(int id, float valorCompra, Timestamp dataCompra, String formaPagamento) {
 		super();
 		this.id = id;
 		this.valorCompra = valorCompra;
 		this.dataCompra = dataCompra;
+		this.formaPagamento = formaPagamento;
 	}
 
 	public int getId() {
@@ -49,9 +51,18 @@ public class Compra {
 		this.dataCompra = dataCompra;
 	}
 
+	public String getFormaPagamento() {
+		return formaPagamento;
+	}
+
+	public void setFormaPagamento(String formaPagamento) {
+		this.formaPagamento = formaPagamento;
+	}
+
 	@Override
 	public String toString() {
-		return "Compra [id=" + id + ", valorCompra=" + valorCompra + ", dataCompra=" + dataCompra + "]";
+		return "Compra [id=" + id + ", valorCompra=" + valorCompra + ", dataCompra=" + dataCompra + ", formaPagamento="
+				+ formaPagamento + "]";
 	}
 	
 	
