@@ -41,18 +41,20 @@ public class Main {
 	private JFrame frame;
 	private JTextField txtEmail;
 	private JPasswordField pssSenha;
-	UsuarioDao usuarioDao = new UsuarioDao();
-	AssentoDao assentoDao = new AssentoDao();
-	FilmeDao filmeDao = new FilmeDao();
-	Usuario usuarioLogado;
-	List<Filme> listaDeFilmes = filmeDao.listarFilmes();
+	private UsuarioDao usuarioDao = new UsuarioDao();
+	private AssentoDao assentoDao = new AssentoDao();
+	private FilmeDao filmeDao = new FilmeDao();
+	private Usuario usuarioLogado;
+	private List<Filme> listaDeFilmes = filmeDao.listarFilmes();
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private Filme filmeSelecionado = null;
-	List<Assento> listaAssentos;
-	private JPanel panelEntrar;
-	private JTextField textField;
-	private JPanel panelAssentos;
-	JPanel panel = new JPanel();
+	private List<Assento> listaAssentos;
+	private JPanel panel = new JPanel();
+	private JPanel panelEntrar = new JPanel();
+	private JPanel panelFilmes = new JPanel();
+	private JPanel panelAssentos = new JPanel();
+	private JPanel panelPagamento = new JPanel();
+	private JPanel panelFinalizar = new JPanel();
 
 
 	
@@ -95,6 +97,22 @@ public class Main {
 		frame.getContentPane().add(panel);
 		panel.setLayout(new CardLayout(0, 0));
 		
+		
+		panel.add(panelEntrar, "painelEntrar");
+		panelEntrar.setLayout(null);
+		
+		panel.add(panelFilmes, "painelFilmes");
+		panelFilmes.setLayout(null);
+		
+		panel.add(panelAssentos, "painelAssentos");
+		panelAssentos.setLayout(null);
+		
+		panel.add(panelPagamento, "painelPagamento");
+		panelPagamento.setLayout(null);
+		
+		panel.add(panelFinalizar, "painelFinalizar");
+		panelFinalizar.setLayout(null);
+		
 		criarEntrar();
 		
 
@@ -120,9 +138,6 @@ public class Main {
 	
 	public void criarEntrar() {
 		
-		panelEntrar = new JPanel();
-		panel.add(panelEntrar, "painelEntrar");
-		panelEntrar.setLayout(null);
 		
 		JLabel lblEntrar = new JLabel("Entrar");
 		lblEntrar.setBounds(35, 27, 62, 20);
@@ -208,9 +223,6 @@ public class Main {
 	
 	public void criarFilmes() {
 		
-		JPanel panelFilmes = new JPanel();
-		panel.add(panelFilmes, "painelFilmes");
-		panelFilmes.setLayout(null);
 		
 		JLabel lblFilmes = new JLabel("Filmes");
 		lblFilmes.setBounds(27, 27, 46, 14);
@@ -323,9 +335,6 @@ public class Main {
 	
 	public void criarAssentos() {
 		
-		panelAssentos = new JPanel();
-		panel.add(panelAssentos, "painelAssentos");
-		panelAssentos.setLayout(null);
 		
 		JToggleButton[][] botoesAssento = new JToggleButton[4][4];
 		
@@ -386,10 +395,7 @@ public class Main {
 	}	
 	
 	public void criarPagamento() {
-		
-		JPanel panelPagamento = new JPanel();
-		panel.add(panelPagamento, "painelPagamento");
-		panelPagamento.setLayout(null);
+	
 		
 		JRadioButton rdbtnPix = new JRadioButton("Pix");
 		rdbtnPix.setBounds(194, 99, 109, 23);
@@ -402,12 +408,7 @@ public class Main {
 				CardLayout c1 = (CardLayout) panel.getLayout();
 				c1.show(panel, "painelFinalizar");
 				
-				JToggleButton tglbtnA1 = new JToggleButton("Teste");
-				tglbtnA1.setBackground(Color.GREEN);				
-				tglbtnA1.setForeground(Color.BLUE);				
-				tglbtnA1.setFont(new Font("Tahoma", Font.PLAIN, 8));
-				tglbtnA1.setBounds(131, 80, 45, 45);
-				panelAssentos.add(tglbtnA1);
+				criarFinalizar();
 				
 				
 				
@@ -422,15 +423,11 @@ public class Main {
 				
 				CardLayout c1 = (CardLayout) panel.getLayout();
 				c1.show(panel, "painelAssentos");
-				
-				criarFinalizar();
-								
+
 				
 			}
 		});
-	
-		
-		
+
 		
 		btnPgVoltar.setBounds(308, 311, 89, 23);
 		panelPagamento.add(btnPgVoltar);
@@ -451,10 +448,7 @@ public class Main {
 	}
 	
 	public void criarFinalizar() {
-		
-		JPanel panelFinalizar = new JPanel();
-		panel.add(panelFinalizar, "painelFinalizar");
-		panelFinalizar.setLayout(null);
+	
 		
 		JButton btnComprarDeNovo = new JButton("Comprar Novamente");
 		btnComprarDeNovo.addActionListener(new ActionListener() {
