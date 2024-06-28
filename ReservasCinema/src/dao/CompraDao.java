@@ -44,6 +44,8 @@ public class CompraDao {
 	
 	public int inserirCompra(float valorCompra, String formaPagamento) {
 		
+		Compra compra;
+		
 		String insert = "INSERT INTO compra (valor_compra, forma_pagamento) VALUES (?, ?)";
 		
 		try {
@@ -55,11 +57,17 @@ public class CompraDao {
 
 			pst.executeUpdate();
 			
-			ResultSet rs = pst.executeQuery();
+			ResultSet rs = pst.getGeneratedKeys();
+	        int chaveGerada = 0;
+	        if (rs.next()) {
+	            chaveGerada = rs.getInt(1);
+	        }
 			
 			rs.close();
 			pst.close();
 			con.close();
+			
+			return chaveGerada;
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -43,7 +43,7 @@ public class IngressoDao {
 	
 	public int inserirIngresso(Usuario usuario, Compra compra, Filme filme, Assento assento) {
 		
-		String insert = "INSERT INTO ingresso (FK_usuario_id, FK_compra_id, FK_filme_id, FK_assento_id) VALUES (?, ?, ?, ?)";
+		String insert = "INSERT INTO ingresso (FK_usuario_id, FK_compra_id, FK_filme_id, fk_assento_id) VALUES (?, ?, ?, ?)";
 		
 		try {
 			
@@ -55,7 +55,12 @@ public class IngressoDao {
 			pst.setInt(4, assento.getId());
 			pst.executeUpdate();
 			
-			ResultSet rs = pst.executeQuery();
+			ResultSet rs = pst.getGeneratedKeys();
+			int chaveGerada;
+			if(rs.next()) {
+				chaveGerada = rs.getInt(1);	
+				return chaveGerada;
+			}
 			
 			rs.close();
 			pst.close();

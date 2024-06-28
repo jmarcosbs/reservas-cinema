@@ -15,7 +15,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import dao.AssentoDao;
+import dao.CompraDao;
 import dao.FilmeDao;
+import dao.IngressoDao;
 import dao.UsuarioDao;
 import entidades.Usuario;
 import entidades.Assento;
@@ -45,6 +47,8 @@ public class Main {
 	private JPasswordField pssSenha;
 	private UsuarioDao usuarioDao = new UsuarioDao();
 	private AssentoDao assentoDao = new AssentoDao();
+	private IngressoDao ingressoDao = new IngressoDao();
+	private CompraDao compraDao = new CompraDao();
 	private FilmeDao filmeDao = new FilmeDao();
 	private Usuario usuarioLogado;
 	private List<Filme> listaDeFilmes = filmeDao.listarFilmes();
@@ -61,6 +65,7 @@ public class Main {
 	private JPanel panelFinalizar = new JPanel();
 	private Compra compra;
 	private String formaPagamento;
+	private List<Assento> assentosSelecionados;
 	
 
 	/**
@@ -368,7 +373,7 @@ public class Main {
 
 					CardLayout c1 = (CardLayout) panel.getLayout();
 					c1.show(panel, "painelPagamento");
-					System.out.println(assentosSelecionado());
+					assentosSelecionados = assentosSelecionado();
 					criarPagamento();
 				}
 			});
@@ -421,7 +426,7 @@ public class Main {
 					formaPagamento = null;
 				}
 				
-				
+				finalizarCompra();
 				
 				criarFinalizar();
 				
@@ -535,6 +540,24 @@ public class Main {
 		
 	}
 
+	
+	public void finalizarCompra() {
+		
+		float valorIngresso = filmeSelecionado.getValorIngresso();
+		int quantidadeIngressos = assentosSelecionados.size();
+		float valorCompra = valorIngresso * quantidadeIngressos;
+		
+		int compraId = compraDao.inserirCompra(valorCompra, formaPagamento);
+		
+		//compra = new Compra(compraId, valorCompra, formaPagamento);
+	
+		for(Assento assento : listaAssentos) {
+			
+			ingressoDao.inserirIngresso(usuarioLogado, compra, filmeSelecionado, assento);
+			
+		}
+		
+	}
 	
 }
 	
