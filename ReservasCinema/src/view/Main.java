@@ -180,7 +180,12 @@ public class Main {
 		
 		
 		JLabel lblEmail = new JLabel("Email");
-		lblEmail.setBounds(179, 101, 46, 14);
+		// Configurando a fonte Tahoma, tamanho 14 e negrito
+        Font fonteTahoma = new Font("Tahoma", Font.BOLD, 14);
+        lblEmail.setFont(fonteTahoma);
+
+        // Definindo o posicionamento usando setBounds
+        lblEmail.setBounds(179, 101, 46, 14);
 		panelEntrar.add(lblEmail);
 		
 		JLabel lblSenha = new JLabel("Senha");
