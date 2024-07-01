@@ -29,7 +29,6 @@ public class UsuarioDao {
 		Connection con = null;
 		try {
 			con = DriverManager.getConnection(url, user, password);
-			System.out.println("conectado");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -87,7 +86,6 @@ public class UsuarioDao {
 			
 			
 			if (rs.next() == false) {
-				System.out.println("Usuario não encontrado");
 				usuarioLogado = null;
 			} else {
 				
@@ -98,12 +96,10 @@ public class UsuarioDao {
 					int idCadastrado = rs.getInt(1);
 					String nomeCadastrado = rs.getString(2);
 					String emailCadastrado = rs.getString(3);
-					System.out.println("Login aprovado");
 					
 					usuarioLogado = new Usuario(idCadastrado, nomeCadastrado, emailCadastrado, senhaCadastrada);
 					
 				} else {
-					System.out.println("Senha incorreta.");
 					usuarioLogado = null;
 					
 			}

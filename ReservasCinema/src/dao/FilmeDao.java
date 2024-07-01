@@ -31,7 +31,6 @@ public class FilmeDao {
 		Connection con = null;
 		try {
 			con = DriverManager.getConnection(url, user, password);
-			System.out.println("conectado");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -61,7 +60,6 @@ public class FilmeDao {
 
 				Filme filme = new Filme(id, titulo, sinopse, valorIngresso, horario);
 				listaDeFilmes.add(filme);
-				System.out.println(listaDeFilmes);
 				
 				
 			}

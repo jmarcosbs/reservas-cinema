@@ -99,6 +99,7 @@ public class Main {
 		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 553, 454);
+		frame.getContentPane().setBackground(new Color(255, 255, 255));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -109,18 +110,23 @@ public class Main {
 		
 		panel.add(panelEntrar, "painelEntrar");
 		panelEntrar.setLayout(null);
+		panelEntrar.setBackground(new Color(255, 255, 255));
 		
 		panel.add(panelFilmes, "painelFilmes");
 		panelFilmes.setLayout(null);
+		panelEntrar.setBackground(new Color(255, 255, 255));
 		
 		panel.add(panelAssentos, "painelAssentos");
 		panelAssentos.setLayout(null);
+		panelEntrar.setBackground(new Color(255, 255, 255));
 		
 		panel.add(panelPagamento, "painelPagamento");
 		panelPagamento.setLayout(null);
+		panelEntrar.setBackground(new Color(255, 255, 255));
 		
 		panel.add(panelFinalizar, "painelFinalizar");
 		panelFinalizar.setLayout(null);
+		panelEntrar.setBackground(new Color(255, 255, 255));
 		
 		criarEntrar();
 	
@@ -134,20 +140,7 @@ public class Main {
 		lblEntrar.setBounds(35, 27, 62, 20);
 		panelEntrar.add(lblEntrar);
 		
-		
-		JButton btnEntrarAvancar = new JButton("Avançar");
-		btnEntrarAvancar.setEnabled(false);
-		btnEntrarAvancar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				CardLayout c1 = (CardLayout) panel.getLayout();
-				c1.show(panel, "painelFilmes");
-				criarFilmes();
-				
-			}
-		});
-		btnEntrarAvancar.setBounds(425, 368, 89, 23);
-		panelEntrar.add(btnEntrarAvancar);
+
 		
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
@@ -160,10 +153,11 @@ public class Main {
 				String email = txtEmail.getText();
 				
 				usuarioLogado = usuarioDao.LogarUsuario(email, senha);
-				
 				if (usuarioLogado != null) {
 					JOptionPane.showMessageDialog(null, "Bem-vindo");
-					btnEntrarAvancar.setEnabled(true);
+					CardLayout c1 = (CardLayout) panel.getLayout();
+					c1.show(panel, "painelFilmes");
+					criarFilmes();
 				} else {
 					JOptionPane.showMessageDialog(null, "Informações inválidas");
 				}
@@ -334,7 +328,6 @@ public class Main {
 		
 		if (filmeSelecionado != null) {
 			listaAssentos = assentoDao.listaAssentos(filmeSelecionado);
-			System.out.println(filmeSelecionado.getTitulo());
 			
 			
 			//Adiciona os botões representando os assentos
@@ -414,7 +407,9 @@ public class Main {
 		panelPagamento.add(lblPagamento);
 		
 		
+		
 		JButton btnPgAvancar = new JButton("Avançar");
+		btnPgAvancar.setEnabled(false);
 		btnPgAvancar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -440,7 +435,35 @@ public class Main {
 			}
 		});
 		btnPgAvancar.setBounds(407, 311, 89, 23);
+		btnPgAvancar.setEnabled(false);
 		panelPagamento.add(btnPgAvancar);
+		
+		rdbtnPix.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdbtnPix.isSelected()) {
+					btnPgAvancar.setEnabled(true);
+					filmeSelecionado = listaDeFilmes.get(1);
+				} 
+			}
+		});
+		
+		rdbtnCredito.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdbtnCredito.isSelected()) {
+					btnPgAvancar.setEnabled(true);
+					filmeSelecionado = listaDeFilmes.get(1);
+				} 
+			}
+		});
+		
+		rdbtnDebito.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdbtnDebito.isSelected()) {
+					btnPgAvancar.setEnabled(true);
+					filmeSelecionado = listaDeFilmes.get(1);
+				} 
+			}
+		});
 		
 		JButton btnPgVoltar = new JButton("Voltar");
 		btnPgVoltar.addActionListener(new ActionListener() {
@@ -518,8 +541,6 @@ public class Main {
 		
 		for (Assento assento : listaAssentos) {
 			
-			System.out.println(assento.toString());
-			
 			if (assento.getOcupado() == 1) {
 				
 				for(int i = 0; i < botoesAssento.length; i++) {
@@ -552,15 +573,15 @@ public class Main {
 		int quantidadeIngressos = assentosSelecionados.size();
 		float valorCompra = valorIngresso * quantidadeIngressos;
 		
-		int compraId = compraDao.inserirCompra(valorCompra, formaPagamento);
-		
-		//compra = new Compra(compraId, valorCompra, formaPagamento);
-	
-		for(Assento assento : listaAssentos) {
+		compra = compraDao.inserirCompra(valorCompra, formaPagamento);
+
+		for(Assento assento : assentosSelecionados) {
 			
 			ingressoDao.inserirIngresso(usuarioLogado, compra, filmeSelecionado, assento);
+			assentoDao.atualizarOcupado(assento);
 			
 		}
+		
 		
 	}
 	

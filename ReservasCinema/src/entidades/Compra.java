@@ -1,12 +1,11 @@
 package entidades;
 
-import java.security.Timestamp;
 
 public class Compra {
 
 	private int id;
 	private float valorCompra;
-	private Timestamp dataCompra;
+	private java.sql.Timestamp dataCompra;
 	private String formaPagamento;
 	
 	public Compra() {
@@ -19,7 +18,7 @@ public class Compra {
 		this.formaPagamento = formaPagamento;
 	}
 
-	public Compra(int id, float valorCompra, Timestamp dataCompra, String formaPagamento) {
+	public Compra(int id, float valorCompra, java.sql.Timestamp dataCompra, String formaPagamento) {
 		super();
 		this.id = id;
 		this.valorCompra = valorCompra;
@@ -43,11 +42,11 @@ public class Compra {
 		this.valorCompra = valorCompra;
 	}
 
-	public Timestamp getDataCompra() {
+	public java.sql.Timestamp getDataCompra() {
 		return dataCompra;
 	}
 
-	public void setDataCompra(Timestamp dataCompra) {
+	public void setDataCompra(java.sql.Timestamp dataCompra) {
 		this.dataCompra = dataCompra;
 	}
 

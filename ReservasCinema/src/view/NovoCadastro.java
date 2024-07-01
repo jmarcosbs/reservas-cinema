@@ -180,7 +180,6 @@ public class NovoCadastro extends JFrame {
 			public void inputMethodTextChanged(InputMethodEvent event) {
 				
 				btnCadastrar.setEnabled(verificaCamposIguais(pssSenha, pssRepeteSenha));
-				System.out.println(verificaCamposIguais(pssSenha, pssRepeteSenha));
 				
 			}
 		});

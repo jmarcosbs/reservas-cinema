@@ -32,7 +32,6 @@ public class IngressoDao {
 		Connection con = null;
 		try {
 			con = DriverManager.getConnection(url, user, password);
-			System.out.println("conectado");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

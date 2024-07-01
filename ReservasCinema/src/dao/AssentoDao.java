@@ -34,7 +34,6 @@ public class AssentoDao {
 		Connection con = null;
 		try {
 			con = DriverManager.getConnection(url, user, password);
-			System.out.println("conectado");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -68,7 +67,6 @@ public class AssentoDao {
 				
 			}
 		
-		System.out.println(listaAssentos.toString());
 		
 		rs.close();
 		pst.close();
@@ -81,6 +79,32 @@ public class AssentoDao {
 	
 		
 		return listaAssentos;
+		
+	}
+	
+	public void atualizarOcupado(Assento assento) {
+		
+		
+		
+		try {
+			
+			String sql = "UPDATE reserva_cinema.assento SET ocupado = 1 WHERE id = ?";
+			Connection con = getConexao();
+			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setInt(1, assento.getId());
+			pst.executeUpdate();
+			
+			
+			pst.close();
+			con.close();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
 		
 	}
 	

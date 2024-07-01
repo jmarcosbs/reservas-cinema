@@ -1,5 +1,6 @@
 package dao;
 
+import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -32,7 +33,6 @@ public class CompraDao {
 		Connection con = null;
 		try {
 			con = DriverManager.getConnection(url, user, password);
-			System.out.println("conectado");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -42,14 +42,16 @@ public class CompraDao {
 	}
 	
 	
-	public int inserirCompra(float valorCompra, String formaPagamento) {
+	public Compra inserirCompra(float valorCompra, String formaPagamento) {
 		
-		Compra compra;
 		
 		String insert = "INSERT INTO compra (valor_compra, forma_pagamento) VALUES (?, ?)";
 		
+		Compra compra;
+		
 		try {
 			
+			//Compra compra;
 			Connection con = getConexao();
 			PreparedStatement pst = con.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
 			pst.setFloat(1, valorCompra);
@@ -58,22 +60,44 @@ public class CompraDao {
 			pst.executeUpdate();
 			
 			ResultSet rs = pst.getGeneratedKeys();
-	        int chaveGerada = 0;
-	        if (rs.next()) {
-	            chaveGerada = rs.getInt(1);
-	        }
+			
+			int chaveGerada = 0;
+			
+			while ( rs.next() ) {
+				
+				chaveGerada = rs.getInt(1);
+				
+			}
+			
+			insert = "select * from reserva_cinema.compra WHERE id = ?";
+			
+			pst = con.prepareStatement(insert);
+			pst.setInt(1, chaveGerada);
+			rs = pst.executeQuery();
+			
+			while (rs.next()) {
+				
+				int idCompraRt = rs.getInt(1);
+				float valorCompraRt = rs.getFloat(2);
+				java.sql.Timestamp dataCompraRt = rs.getTimestamp(3);
+				String formaPagamentoRt = rs.getString(4);
+				
+				compra = new Compra(idCompraRt, valorCompraRt, dataCompraRt, formaPagamentoRt);
+				
+				return compra;
+				
+			}
 			
 			rs.close();
 			pst.close();
 			con.close();
 			
-			return chaveGerada;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return 0;
+		return null;
 	}
 	
 	
