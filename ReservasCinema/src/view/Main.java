@@ -135,14 +135,9 @@ public class Main {
 	
 	public void criarEntrar() {
 		
+		adicionarCabecalho(panelEntrar, 1);
 		
-		JLabel lblEntrar = new JLabel("Entrar");
-		lblEntrar.setBounds(35, 27, 62, 20);
-		panelEntrar.add(lblEntrar);
-		
-
-		
-		JButton btnLogin = new JButton("Login");
+		JButton btnLogin = new JButton("Entrar");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -165,30 +160,37 @@ public class Main {
 
 			}	
 		});
-		btnLogin.setBounds(180, 235, 149, 23);
+		btnLogin.setForeground(new Color(255, 255, 255));
+		btnLogin.setBackground(new Color(136, 191, 152));
+		btnLogin.setBounds(205, 292, 120, 42);
 		panelEntrar.add(btnLogin);
 		
 		
 		
 		txtEmail = new JTextField();
-		txtEmail.setBounds(180, 126, 149, 20);
-		panelEntrar.add(txtEmail);
+		txtEmail.setText("admin");
+		txtEmail.setBackground(new Color(217, 217, 217));
+		txtEmail.setBounds(167, 154, 196, 34);
 		txtEmail.setColumns(10);
+		panelEntrar.add(txtEmail);
+		
+		JLabel titulo = new JLabel("Ingressos para o cinema");
+		titulo.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		titulo.setHorizontalAlignment(SwingConstants.CENTER);
+		titulo.setBounds(0, 75, 537, 34);
+		panelEntrar.add(titulo);
 		
 		
-		
-		
-		JLabel lblEmail = new JLabel("Email");
-		// Configurando a fonte Tahoma, tamanho 14 e negrito
-        Font fonteTahoma = new Font("Tahoma", Font.BOLD, 14);
-        lblEmail.setFont(fonteTahoma);
-
-        // Definindo o posicionamento usando setBounds
-        lblEmail.setBounds(179, 101, 46, 14);
+		JLabel lblEmail = new JLabel("E-mail:");
+		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEmail.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		lblEmail.setBounds(150, 125, 76, 34);
 		panelEntrar.add(lblEmail);
 		
 		JLabel lblSenha = new JLabel("Senha");
-		lblSenha.setBounds(180, 157, 46, 14);
+		lblSenha.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSenha.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		lblSenha.setBounds(150, 201, 76, 34);
 		panelEntrar.add(lblSenha);
 		
 		JLabel lblSemCadastro = new JLabel("Ainda não tenho cadastro");
@@ -201,12 +203,17 @@ public class Main {
 				
 			}
 		});
+		lblSemCadastro.setForeground(new Color(136, 191, 152));
 		lblSemCadastro.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSemCadastro.setBounds(180, 297, 149, 14);
+		lblSemCadastro.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		lblSemCadastro.setBounds(0, 354, 537, 34);
 		panelEntrar.add(lblSemCadastro);
 		
 		pssSenha = new JPasswordField();
-		pssSenha.setBounds(180, 192, 149, 20);
+		pssSenha.setText("admin");
+		pssSenha.setColumns(10);
+		pssSenha.setBackground(new Color(217, 217, 217));
+		pssSenha.setBounds(167, 228, 196, 34);
 		panelEntrar.add(pssSenha);
 		
 	}
@@ -214,29 +221,26 @@ public class Main {
 	
 	public void criarFilmes() {
 		
-		
-		JLabel lblFilmes = new JLabel("Filmes");
-		lblFilmes.setBounds(27, 27, 46, 14);
-		panelFilmes.add(lblFilmes);
+		adicionarCabecalho(panelFilmes, 2);
 		
 		JLabel lblFilme1 = new JLabel("New label");
 		lblFilme1.setIcon(new ImageIcon("src\\imagens\\divertidamente.png"));
-		lblFilme1.setBounds(10, 88, 109, 171);
+		lblFilme1.setBounds(10, 68, 109, 171);
 		panelFilmes.add(lblFilme1);
 		
 		JLabel lblFilme2 = new JLabel("");
 		lblFilme2.setIcon(new ImageIcon("src\\imagens\\bad.png"));
-		lblFilme2.setBounds(143, 88, 109, 171);
+		lblFilme2.setBounds(143, 68, 109, 171);
 		panelFilmes.add(lblFilme2);
 		
 		JLabel lblFilme3 = new JLabel("New label");
 		lblFilme3.setIcon(new ImageIcon("src\\imagens\\planeta.png"));
-		lblFilme3.setBounds(282, 88, 109, 171);
+		lblFilme3.setBounds(282, 68, 109, 171);
 		panelFilmes.add(lblFilme3);
 		
 		JLabel lblFilme4 = new JLabel("New label");
 		lblFilme4.setIcon(new ImageIcon("src\\imagens\\assassino.png"));
-		lblFilme4.setBounds(417, 88, 109, 171);
+		lblFilme4.setBounds(417, 68, 109, 171);
 		panelFilmes.add(lblFilme4);
 		
 		JButton btnFilmeAvancar = new JButton("Avançar");
@@ -253,7 +257,9 @@ public class Main {
 		});
 	
 		
-		btnFilmeAvancar.setBounds(417, 382, 89, 23);
+		btnFilmeAvancar.setForeground(new Color(255, 255, 255));
+		btnFilmeAvancar.setBackground(new Color(136, 191, 152));
+		btnFilmeAvancar.setBounds(411, 361, 99, 29);
 		panelFilmes.add(btnFilmeAvancar);
 
 		
@@ -270,8 +276,8 @@ public class Main {
 		});
 		
 		bgFilmes.add(rdbtnFilme1);
-		
-		rdbtnFilme1.setBounds(20, 270, 109, 23);
+		rdbtnFilme1.setFont(new Font("Bahnschrift", Font.BOLD, 11));
+		rdbtnFilme1.setBounds(10, 250, 109, 23);
 		panelFilmes.add(rdbtnFilme1);
 	
 		
@@ -285,7 +291,8 @@ public class Main {
 			}
 		});
 		bgFilmes.add(rdbtnFilme2);
-		rdbtnFilme2.setBounds(143, 270, 109, 23);
+		rdbtnFilme2.setBounds(143, 250, 109, 23);
+		rdbtnFilme2.setFont(new Font("Bahnschrift", Font.BOLD, 11));
 		panelFilmes.add(rdbtnFilme2);
 		
 		JRadioButton rdbtnFilme3 = new JRadioButton(listaDeFilmes.get(2).getTitulo());
@@ -299,7 +306,8 @@ public class Main {
 			}
 		});
 		bgFilmes.add(rdbtnFilme3);
-		rdbtnFilme3.setBounds(282, 270, 109, 23);
+		rdbtnFilme3.setFont(new Font("Bahnschrift", Font.BOLD, 11));
+		rdbtnFilme3.setBounds(282, 250, 109, 23);
 		panelFilmes.add(rdbtnFilme3);
 		
 		JRadioButton rdbtnFilme4 = new JRadioButton(listaDeFilmes.get(3).getTitulo());
@@ -315,16 +323,66 @@ public class Main {
 		});
 		
 		bgFilmes.add(rdbtnFilme4);
-		rdbtnFilme4.setBounds(417, 270, 109, 23);
+		rdbtnFilme4.setBounds(417, 250, 109, 23);
+		rdbtnFilme4.setFont(new Font("Bahnschrift", Font.BOLD, 11));
 		panelFilmes.add(rdbtnFilme4);
 
-		JLabel lblPreço = new JLabel("R$34");
-		lblPreço.setBounds(27, 300, 46, 14);
-		panelFilmes.add(lblPreço);
+		JLabel lblPreco1 = new JLabel("Preço: R$" + listaDeFilmes.get(0).getValorIngresso());
+		lblPreco1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPreco1.setFont(new Font("Bahnschrift", Font.BOLD, 11));
+		lblPreco1.setBounds(10, 291, 109, 14);
+		panelFilmes.add(lblPreco1);
+		
+		JLabel lblHorario1 = new JLabel("Horário: " + listaDeFilmes.get(0).getHorario());
+		lblHorario1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblHorario1.setFont(new Font("Bahnschrift", Font.BOLD, 11));
+		lblHorario1.setBounds(10, 316, 109, 14);
+		panelFilmes.add(lblHorario1);
+		
+		
+		JLabel lblPreco2 = new JLabel("Preço: R$" + listaDeFilmes.get(1).getValorIngresso());
+		lblPreco2.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPreco2.setFont(new Font("Bahnschrift", Font.BOLD, 11));
+		lblPreco2.setBounds(143, 291, 109, 14);
+		panelFilmes.add(lblPreco2);
+		
+		JLabel lblHorario2 = new JLabel("Horário: " + listaDeFilmes.get(1).getHorario());
+		lblHorario2.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblHorario2.setFont(new Font("Bahnschrift", Font.BOLD, 11));
+		lblHorario2.setBounds(143, 316, 109, 14);
+		panelFilmes.add(lblHorario2);
+		
+		JLabel lblPreco3 = new JLabel("Preço: R$" + listaDeFilmes.get(2).getValorIngresso());
+		lblPreco3.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPreco3.setFont(new Font("Bahnschrift", Font.BOLD, 11));
+		lblPreco3.setBounds(282, 291, 109, 14);
+		panelFilmes.add(lblPreco3);
+		
+		JLabel lblHorario3 = new JLabel("Horário: " + listaDeFilmes.get(2).getHorario());
+		lblHorario3.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblHorario3.setFont(new Font("Bahnschrift", Font.BOLD, 11));
+		lblHorario3.setBounds(282, 316, 109, 14);
+		panelFilmes.add(lblHorario3);
+		
+		JLabel lblPreco4 = new JLabel("Preço: R$" + listaDeFilmes.get(3).getValorIngresso());
+		lblPreco4.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPreco4.setFont(new Font("Bahnschrift", Font.BOLD, 11));
+		lblPreco4.setBounds(401, 291, 109, 14);
+		panelFilmes.add(lblPreco4);
+		
+		JLabel lblHorario4 = new JLabel("Horário: " + listaDeFilmes.get(3).getHorario());
+		lblHorario4.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblHorario4.setFont(new Font("Bahnschrift", Font.BOLD, 11));
+		lblHorario4.setBounds(401, 316, 109, 14);
+		panelFilmes.add(lblHorario4);
+		
 	}
 	
 	
 	public void criarAssentos() {
+		
+		adicionarCabecalho(panelAssentos, 3);
+	
 		
 		if (filmeSelecionado != null) {
 			listaAssentos = assentoDao.listaAssentos(filmeSelecionado);
@@ -341,14 +399,16 @@ public class Main {
 					String nomeAssento = String.valueOf(listaAssentos.get(k++).getCodigoAssento());
 					JToggleButton btn = new JToggleButton(nomeAssento);
 					btn.setFont(new Font("Tahoma", Font.PLAIN, 8));
-					btn.setBounds(131 + (55*j), 80 + (i*56), 45, 45);
+					btn.setBounds(162 + (55*j), 80 + (i*56), 45, 45);
 					botoesAssento[i][j] = btn;
 					panelAssentos.add(btn);
+					
 
 				}
 
 				
 			}
+			
 			
 			desabilitaAssentosOcupados();
 			
@@ -386,6 +446,8 @@ public class Main {
 	}	
 	
 	public void criarPagamento() {
+		
+		adicionarCabecalho(panelPagamento, 4);
 		
 		JRadioButton rdbtnPix = new JRadioButton("Pix");
 		rdbtnPix.setBounds(194, 99, 109, 23);
@@ -485,6 +547,7 @@ public class Main {
 	
 	public void criarFinalizar() {
 	
+		adicionarCabecalho(panelFinalizar, 5);
 		
 		JButton btnComprarDeNovo = new JButton("Comprar Novamente");
 		btnComprarDeNovo.addActionListener(new ActionListener() {
@@ -582,6 +645,91 @@ public class Main {
 			
 		}
 		
+		
+	}
+	
+	public void adicionarCabecalho(JPanel panel, int posicaoVerde) {
+		
+		JLabel lblNomeProgresso1 = new JLabel("Entrar");
+		lblNomeProgresso1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNomeProgresso1.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+		lblNomeProgresso1.setBounds(46, 21, 46, 28);
+		panel.add(lblNomeProgresso1);
+		
+		JLabel lblIconProgresso1 = new JLabel("New label");
+		lblIconProgresso1.setIcon(new ImageIcon("C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\cinza.png"));
+		lblIconProgresso1.setBounds(25, 25, 19, 19);
+		panel.add(lblIconProgresso1);
+		
+		JLabel lblNomeProgresso2 = new JLabel("Filmes");
+		lblNomeProgresso2.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNomeProgresso2.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+		lblNomeProgresso2.setBounds(141, 21, 51, 28);
+		panel.add(lblNomeProgresso2);
+		
+		JLabel lblIconProgresso2 = new JLabel("New label");
+		lblIconProgresso2.setIcon(new ImageIcon("C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\cinza.png"));
+		lblIconProgresso2.setBounds(117, 25, 19, 19);
+		panel.add(lblIconProgresso2);
+		
+		JLabel lblNomeProgresso3 = new JLabel("Assentos");
+		lblNomeProgresso3.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNomeProgresso3.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+		lblNomeProgresso3.setBounds(235, 21, 57, 28);
+		panel.add(lblNomeProgresso3);
+		
+		JLabel lblIconProgresso3 = new JLabel("New label");
+		lblIconProgresso3.setIcon(new ImageIcon("C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\cinza.png"));
+		lblIconProgresso3.setBounds(209, 25, 19, 19);
+		panel.add(lblIconProgresso3);
+		
+		JLabel lblNomeProgresso4 = new JLabel("Pagamento");
+		lblNomeProgresso4.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNomeProgresso4.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+		lblNomeProgresso4.setBounds(339, 21, 76, 28);
+		panel.add(lblNomeProgresso4);
+		
+		JLabel lblIconProgresso4 = new JLabel("Pagamento");
+		lblIconProgresso4.setIcon(new ImageIcon("C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\cinza.png"));
+		lblIconProgresso4.setBounds(314, 25, 19, 19);
+		panel.add(lblIconProgresso4);
+		
+		JLabel lblIconProgresso5 = new JLabel("Pagamento");
+		lblIconProgresso5.setIcon(new ImageIcon("C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\cinza.png"));
+		lblIconProgresso5.setBounds(429, 25, 19, 19);
+		panel.add(lblIconProgresso5);
+		
+		JLabel lblNomeProgresso5 = new JLabel("Recibos");
+		lblNomeProgresso5.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNomeProgresso5.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+		lblNomeProgresso5.setBounds(456, 21, 51, 28);
+		panel.add(lblNomeProgresso5);
+		
+		switch (posicaoVerde) {
+		case 1: {
+			lblIconProgresso1.setIcon(new ImageIcon("C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\verde.png"));
+			break;
+		}
+		case 2: {
+			lblIconProgresso2.setIcon(new ImageIcon("C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\verde.png"));
+			break;
+		}
+		case 3: {
+			lblIconProgresso3.setIcon(new ImageIcon("C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\verde.png"));
+			break;
+		}
+		case 4: {
+			lblIconProgresso4.setIcon(new ImageIcon("C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\verde.png"));
+			break;
+		}
+		case 5: {
+			lblIconProgresso5.setIcon(new ImageIcon("C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\verde.png"));
+			break;
+		}
+		
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + posicaoVerde);
+		}
 		
 	}
 	
