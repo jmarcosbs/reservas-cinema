@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -58,7 +59,7 @@ public class NovoCadastro extends JFrame {
 	 */
 	public NovoCadastro() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 322, 398);
+		setBounds(100, 100, 333, 405);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -66,11 +67,13 @@ public class NovoCadastro extends JFrame {
 		contentPane.setLayout(null);
 		
 		txtNome = new JTextField();
+		txtNome.setBackground(new Color(217, 217, 217));
 		txtNome.setBounds(54, 93, 194, 20);
 		contentPane.add(txtNome);
 		txtNome.setColumns(10);
 		
 		txtEmail = new JTextField();
+		txtEmail.setBackground(new Color(217, 217, 217));
 		txtEmail.setColumns(10);
 		txtEmail.setBounds(54, 151, 194, 20);
 		contentPane.add(txtEmail);
@@ -89,12 +92,16 @@ public class NovoCadastro extends JFrame {
 				
 			}
 		});
-		btnCadastrar.setBounds(108, 300, 89, 23);
+		btnCadastrar.setForeground(new Color(255, 255, 255));
+		btnCadastrar.setBackground(new Color(136, 191, 152));
+		btnCadastrar.setBounds(100, 296, 124, 23);
 		contentPane.add(btnCadastrar);
-		
+	
 		
 		
 		pssSenha = new JPasswordField();
+		pssSenha.setBackground(new Color(217, 217, 217));
+
 	         
 		pssSenha.addInputMethodListener(new InputMethodListener() {
 			public void caretPositionChanged(InputMethodEvent event) {
@@ -110,6 +117,7 @@ public class NovoCadastro extends JFrame {
 		});
 		
 		pssSenha.setBounds(54, 209, 194, 20);
+
 		contentPane.add(pssSenha);
 		
 		pssSenha.getDocument().addDocumentListener(new DocumentListener() {
@@ -139,7 +147,8 @@ public class NovoCadastro extends JFrame {
 		
 		
 		
-		JLabel lblTenhoCadastro = new JLabel("Já tenho cadastro");
+		JLabel lblTenhoCadastro = new JLabel("Já sou cadastrado");
+		lblTenhoCadastro.setFont(new Font("Bahnschrift", Font.BOLD, 13));
 		lblTenhoCadastro.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTenhoCadastro.addMouseListener(new MouseAdapter() {
 			@Override
@@ -149,27 +158,40 @@ public class NovoCadastro extends JFrame {
 				
 			}
 		});
-		lblTenhoCadastro.setBounds(10, 334, 296, 14);
+		lblTenhoCadastro.setBounds(10, 341, 296, 14);
 		contentPane.add(lblTenhoCadastro);
 		
 		JLabel lblNovoCadastro = new JLabel("Novo Cadastro");
-		lblNovoCadastro.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblNovoCadastro.setBounds(54, 21, 149, 23);
+		lblNovoCadastro.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		lblNovoCadastro.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNovoCadastro.setBounds(74, 21, 149, 23);
 		contentPane.add(lblNovoCadastro);
 		
-		JLabel lblNome = new JLabel("Nome");
-		lblNome.setBounds(50, 68, 46, 14);
+	
+		JLabel lblNome = new JLabel("Nome Completo:");
+		lblNome.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNome.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		lblNome.setBounds(50, 68, 114, 14);
 		contentPane.add(lblNome);
 		
-		JLabel lblEmail = new JLabel("Email");
+		JLabel lblEmail = new JLabel("E-mail:");
+		lblEmail.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		lblNome.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNome.setFont(new Font("Bahnschrift", Font.BOLD, 13));
 		lblEmail.setBounds(54, 126, 46, 14);
 		contentPane.add(lblEmail);
 		
-		JLabel lblSenha = new JLabel("Senha");
+		JLabel lblSenha = new JLabel("Senha:");
+		lblSenha.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		lblNome.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNome.setFont(new Font("Bahnschrift", Font.BOLD, 13));
 		lblSenha.setBounds(54, 184, 46, 14);
 		contentPane.add(lblSenha);
 		
-		JLabel lblConfirmeASenha = new JLabel("Confirme a senha");
+		JLabel lblConfirmeASenha = new JLabel("Confirme a senha:");
+		lblConfirmeASenha.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		lblNome.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNome.setFont(new Font("Bahnschrift", Font.BOLD, 13));
 		lblConfirmeASenha.setBounds(54, 240, 178, 14);
 		contentPane.add(lblConfirmeASenha);
 		
@@ -184,6 +206,8 @@ public class NovoCadastro extends JFrame {
 			}
 		});
 		pssRepeteSenha.setBounds(54, 265, 194, 20);
+		pssRepeteSenha.setBackground(new Color(217, 217, 217));
+
 		contentPane.add(pssRepeteSenha);
 		
 		pssRepeteSenha.getDocument().addDocumentListener(new DocumentListener() {
