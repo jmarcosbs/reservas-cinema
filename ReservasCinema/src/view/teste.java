@@ -17,7 +17,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import javax.swing.JScrollPane;
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.JTextArea;
 
 public class teste {
 
@@ -65,6 +71,44 @@ public class teste {
 		frame.getContentPane().add(panel);
 		panel.setLayout(new CardLayout(0, 0));
 		
+	
+	
+		
+		
+		JPanel panelFinalizar = new JPanel();
+        panel.add(panelFinalizar);
+        panelFinalizar.setLayout(null);
+        panelFinalizar.setBounds(0, 0, 500, 400);
+        
+        JTextArea textArea = new JTextArea(
+                "----------------------------- \n"
+                + "INGRESSO 1: \n"
+                + "Assento: A1\n"
+                + "Preço: R$ 50,00\n"
+                + "----------------------------- \n"
+                + "INGRESSO 2: \n"
+                + "Assento: B2\n"
+                + "Preço: R$ 40,00\n"
+                + "----------------------------- \n"
+                + "INGRESSO 3: \n"
+                + "Assento: C3\n"
+                + "Preço: R$ 30,00\n"
+        );
+        textArea.setLineWrap(true);
+        textArea.setEditable(false);
+        textArea.setWrapStyleWord(true);
+        
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setBounds(42, 150, 447, 200);
+        panelFinalizar.add(scrollPane);
+        
+        JLabel lblNewLabel_1 = new JLabel("Compra efetuada com sucesso!");
+        lblNewLabel_1.setFont(new Font("Bahnschrift", Font.PLAIN, 23));
+        lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+        lblNewLabel_1.setBounds(10, 92, 517, 29);
+        panelFinalizar.add(lblNewLabel_1);
+        
+    
 		
 		
 		
@@ -80,6 +124,8 @@ public class teste {
 		
 		
 		
+		
+
 		
 		
 		
@@ -337,6 +383,8 @@ public class teste {
 		lblAindaNoTem.setFont(new Font("Bahnschrift", Font.BOLD, 13));
 		lblAindaNoTem.setBounds(0, 354, 537, 34);
 		panelEntrar.add(lblAindaNoTem);
+	
+		
 		
 		
 		

@@ -10,6 +10,8 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -56,6 +58,8 @@ public class Main {
 	private List<Filme> listaDeFilmes = filmeDao.listarFilmes();
 	private final ButtonGroup bgFilmes = new ButtonGroup();
 	private final ButtonGroup bgPagamento = new ButtonGroup();
+	private final ButtonGroup bgAssentos = new ButtonGroup();
+	
 	private Filme filmeSelecionado = null;
 	private List<Assento> listaAssentos;
 	private JToggleButton[][] botoesAssento = new JToggleButton[4][4];
@@ -68,6 +72,12 @@ public class Main {
 	private Compra compra;
 	private String formaPagamento;
 	private List<Assento> assentosSelecionados;
+	
+	private boolean entrarCriado = false;
+	private boolean filmesCriado = false;
+	private boolean assentosCriado = false;
+	private boolean pagamentosCriado = false;
+	private boolean finalizarCriado = false;
 
 	/**
 	 * Launch the application.
@@ -99,10 +109,11 @@ public class Main {
 	private void initialize() {
 
 		frame = new JFrame();
-		frame.setBounds(100, 100, 560, 480);
+		frame.setBounds(100, 100, 560, 467);
 		frame.getContentPane().setBackground(new Color(255, 255, 255));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setLocationRelativeTo(null); // centraliza janela
 
 		panel.setBounds(0, 0, 539, 415);
 		frame.getContentPane().add(panel);
@@ -134,7 +145,7 @@ public class Main {
 
 	public void criarEntrar() {
 
-		adicionarCabecalho(panelEntrar, 1);
+		adicionarCabecalho(panelEntrar, 1, entrarCriado);
 
 		JButton btnLogin = new JButton("Entrar");
 		btnLogin.addKeyListener(new KeyAdapter() {
@@ -224,7 +235,7 @@ public class Main {
 
 	public void criarFilmes() {
 
-		adicionarCabecalho(panelFilmes, 2);
+		adicionarCabecalho(panelFilmes, 2, filmesCriado);
 
 		JLabel lblFilme1 = new JLabel("New label");
 		lblFilme1.setIcon(new ImageIcon("src\\imagens\\divertidamente.png"));
@@ -378,7 +389,25 @@ public class Main {
 
 	public void criarAssentos() {
 
-		adicionarCabecalho(panelAssentos, 3);
+		adicionarCabecalho(panelAssentos, 3, assentosCriado);
+		
+		JButton btnFilmeAvancar_1 = new JButton("Avançar");
+		btnFilmeAvancar_1.setEnabled(false);
+		btnFilmeAvancar_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				CardLayout c1 = (CardLayout) panel.getLayout();
+				c1.show(panel, "painelPagamento");
+				assentosSelecionados = assentosSelecionado();
+				criarPagamento();
+			}
+		});
+		
+
+		btnFilmeAvancar_1.setForeground(new Color(255, 255, 255));
+		btnFilmeAvancar_1.setBackground(new Color(136, 191, 152));
+		btnFilmeAvancar_1.setBounds(421, 368, 89, 23);
+		panelAssentos.add(btnFilmeAvancar_1);
 
 		if (filmeSelecionado != null) {
 			listaAssentos = assentoDao.listaAssentos(filmeSelecionado);
@@ -396,6 +425,14 @@ public class Main {
 					btn.setBounds(162 + (55 * j), 80 + (i * 56), 45, 45);
 					botoesAssento[i][j] = btn;
 					panelAssentos.add(btn);
+
+					btn.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							if (btn.isSelected()) {
+								btnFilmeAvancar_1.setEnabled(true);
+							}
+						}
+					});
 
 						
 					}
@@ -419,22 +456,7 @@ public class Main {
 			btnFilmeVoltar_1.setBackground(new Color(192, 192, 192));
 			panelAssentos.add(btnFilmeVoltar_1);
 
-			JButton btnFilmeAvancar_1 = new JButton("Avançar");
-			btnFilmeAvancar_1.setEnabled(true);
-			btnFilmeAvancar_1.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-
-					CardLayout c1 = (CardLayout) panel.getLayout();
-					c1.show(panel, "painelPagamento");
-					assentosSelecionados = assentosSelecionado();
-					criarPagamento();
-				}
-			});
-
-			btnFilmeAvancar_1.setForeground(new Color(255, 255, 255));
-			btnFilmeAvancar_1.setBackground(new Color(136, 191, 152));
-			btnFilmeAvancar_1.setBounds(421, 368, 89, 23);
-			panelAssentos.add(btnFilmeAvancar_1);
+	
 
 		}
 
@@ -442,25 +464,29 @@ public class Main {
 
 	public void criarPagamento() {
 
-		adicionarCabecalho(panelPagamento, 4);
+		adicionarCabecalho(panelPagamento, 4, pagamentosCriado);
 
 		JRadioButton rdbtnPix = new JRadioButton("Pix");
-		rdbtnPix.setBounds(194, 99, 109, 23);
+		rdbtnPix.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		rdbtnPix.setBounds(270, 140, 109, 23);
 		panelPagamento.add(rdbtnPix);
 		bgPagamento.add(rdbtnPix);
 
 		JRadioButton rdbtnCredito = new JRadioButton("Credito");
-		rdbtnCredito.setBounds(194, 125, 109, 23);
+		rdbtnCredito.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		rdbtnCredito.setBounds(270, 180, 109, 23);
 		panelPagamento.add(rdbtnCredito);
 		bgPagamento.add(rdbtnCredito);
 
 		JRadioButton rdbtnDebito = new JRadioButton("Debito");
-		rdbtnDebito.setBounds(194, 156, 109, 23);
+		rdbtnDebito.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		rdbtnDebito.setBounds(270, 220, 109, 23);
 		panelPagamento.add(rdbtnDebito);
 		bgPagamento.add(rdbtnDebito);
 
-		JLabel lblPagamento = new JLabel("Pagamento");
-		lblPagamento.setBounds(50, 49, 109, 14);
+		JLabel lblPagamento = new JLabel("Selecione a forma de pagamento:");
+		lblPagamento.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		lblPagamento.setBounds(40, 90, 300, 14);
 		panelPagamento.add(lblPagamento);
 
 		JButton btnPgAvancar = new JButton("Avançar");
@@ -539,21 +565,22 @@ public class Main {
 
 	public void criarFinalizar() {
 
-		adicionarCabecalho(panelFinalizar, 5);
+		adicionarCabecalho(panelFinalizar, 5, finalizarCriado);
 
-		JButton btnComprarDeNovo = new JButton("Comprar Novamente");
-		btnComprarDeNovo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				CardLayout c1 = (CardLayout) panel.getLayout();
-				c1.show(panel, "painelFilmes");
-			}
-		});
-		btnComprarDeNovo.setBounds(318, 309, 183, 23);
-		panelFinalizar.add(btnComprarDeNovo);
-
-		JLabel lblFinalizar = new JLabel("Finalizar");
-		lblFinalizar.setBounds(51, 44, 46, 14);
-		panelFinalizar.add(lblFinalizar);
+		JTextArea textArea = new JTextArea(ingressoDao.imprimeIngressos(compra, usuarioLogado, filmeSelecionado));
+        textArea.setLineWrap(true);
+        textArea.setEditable(false);
+        textArea.setWrapStyleWord(true);
+        
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setBounds(42, 150, 455, 200);
+        panelFinalizar.add(scrollPane);
+        
+        JLabel lblNewLabel_1 = new JLabel("Compra efetuada com sucesso!");
+        lblNewLabel_1.setFont(new Font("Bahnschrift", Font.PLAIN, 23));
+        lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+        lblNewLabel_1.setBounds(10, 92, 517, 29);
+        panelFinalizar.add(lblNewLabel_1);
 
 	}
 
@@ -636,99 +663,114 @@ public class Main {
 
 	}
 
-	public void adicionarCabecalho(JPanel panel, int posicaoVerde) {
-
-		JLabel lblNomeProgresso1 = new JLabel("Entrar");
-		lblNomeProgresso1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNomeProgresso1.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-		lblNomeProgresso1.setBounds(46, 21, 46, 28);
-		panel.add(lblNomeProgresso1);
-
-		JLabel lblIconProgresso1 = new JLabel("New label");
-		lblIconProgresso1.setIcon(new ImageIcon(
-				"C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\cinza.png"));
-		lblIconProgresso1.setBounds(25, 25, 19, 19);
-		panel.add(lblIconProgresso1);
-
-		JLabel lblNomeProgresso2 = new JLabel("Filmes");
-		lblNomeProgresso2.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNomeProgresso2.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-		lblNomeProgresso2.setBounds(141, 21, 51, 28);
-		panel.add(lblNomeProgresso2);
-
-		JLabel lblIconProgresso2 = new JLabel("New label");
-		lblIconProgresso2.setIcon(new ImageIcon(
-				"C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\cinza.png"));
-		lblIconProgresso2.setBounds(117, 25, 19, 19);
-		panel.add(lblIconProgresso2);
-
-		JLabel lblNomeProgresso3 = new JLabel("Assentos");
-		lblNomeProgresso3.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNomeProgresso3.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-		lblNomeProgresso3.setBounds(235, 21, 57, 28);
-		panel.add(lblNomeProgresso3);
-
-		JLabel lblIconProgresso3 = new JLabel("New label");
-		lblIconProgresso3.setIcon(new ImageIcon(
-				"C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\cinza.png"));
-		lblIconProgresso3.setBounds(209, 25, 19, 19);
-		panel.add(lblIconProgresso3);
-
-		JLabel lblNomeProgresso4 = new JLabel("Pagamento");
-		lblNomeProgresso4.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNomeProgresso4.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-		lblNomeProgresso4.setBounds(339, 21, 76, 28);
-		panel.add(lblNomeProgresso4);
-
-		JLabel lblIconProgresso4 = new JLabel("Pagamento");
-		lblIconProgresso4.setIcon(new ImageIcon(
-				"C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\cinza.png"));
-		lblIconProgresso4.setBounds(314, 25, 19, 19);
-		panel.add(lblIconProgresso4);
-
-		JLabel lblIconProgresso5 = new JLabel("Pagamento");
-		lblIconProgresso5.setIcon(new ImageIcon(
-				"C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\cinza.png"));
-		lblIconProgresso5.setBounds(429, 25, 19, 19);
-		panel.add(lblIconProgresso5);
-
-		JLabel lblNomeProgresso5 = new JLabel("Recibos");
-		lblNomeProgresso5.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNomeProgresso5.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-		lblNomeProgresso5.setBounds(456, 21, 51, 28);
-		panel.add(lblNomeProgresso5);
-
-		switch (posicaoVerde) {
-		case 1: {
-			lblIconProgresso1.setIcon(new ImageIcon(
-					"C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\verde.png"));
-			break;
-		}
-		case 2: {
-			lblIconProgresso2.setIcon(new ImageIcon(
-					"C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\verde.png"));
-			break;
-		}
-		case 3: {
-			lblIconProgresso3.setIcon(new ImageIcon(
-					"C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\verde.png"));
-			break;
-		}
-		case 4: {
-			lblIconProgresso4.setIcon(new ImageIcon(
-					"C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\verde.png"));
-			break;
-		}
-		case 5: {
-			lblIconProgresso5.setIcon(new ImageIcon(
-					"C:\\Users\\joao.silva117\\Documents\\GitHub\\reservas-cinema\\ReservasCinema\\src\\imagens\\verde.png"));
-			break;
-		}
-
-		default:
-			throw new IllegalArgumentException("Unexpected value: " + posicaoVerde);
+	public void adicionarCabecalho(JPanel panel, int posicaoVerde, boolean cabecalhoCriado) {
+		
+		if (cabecalhoCriado == false) {
+			JLabel lblIconProgresso1 = new JLabel("");
+			lblIconProgresso1.setIcon(new ImageIcon("..\\ReservasCinema\\src\\imagens\\cinza.png"));
+			lblIconProgresso1.setBounds(25, 25, 19, 19);
+			panel.add(lblIconProgresso1);
+	
+			JLabel lblNomeProgresso1 = new JLabel("Entrar");
+			lblNomeProgresso1.setHorizontalAlignment(SwingConstants.CENTER);
+			lblNomeProgresso1.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+			lblNomeProgresso1.setBounds(46, 21, 46, 28);
+			panel.add(lblNomeProgresso1);
+	
+			JLabel lblNomeProgresso2 = new JLabel("Filmes");
+			lblNomeProgresso2.setHorizontalAlignment(SwingConstants.LEFT);
+			lblNomeProgresso2.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+			lblNomeProgresso2.setBounds(141, 21, 51, 28);
+			panel.add(lblNomeProgresso2);
+	
+			JLabel lblIconProgresso2 = new JLabel("New label");
+			lblIconProgresso2.setIcon(new ImageIcon("..\\ReservasCinema\\src\\imagens\\cinza.png"));
+			lblIconProgresso2.setBounds(117, 25, 19, 19);
+			panel.add(lblIconProgresso2);
+	
+			JLabel lblNomeProgresso3 = new JLabel("Assentos");
+			lblNomeProgresso3.setHorizontalAlignment(SwingConstants.LEFT);
+			lblNomeProgresso3.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+			lblNomeProgresso3.setBounds(235, 21, 57, 28);
+			panel.add(lblNomeProgresso3);
+	
+			JLabel lblIconProgresso3 = new JLabel("New label");
+			lblIconProgresso3.setIcon(new ImageIcon("..\\ReservasCinema\\src\\imagens\\cinza.png"));
+			lblIconProgresso3.setBounds(209, 25, 19, 19);
+			panel.add(lblIconProgresso3);
+	
+			JLabel lblNomeProgresso4 = new JLabel("Pagamento");
+			lblNomeProgresso4.setHorizontalAlignment(SwingConstants.LEFT);
+			lblNomeProgresso4.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+			lblNomeProgresso4.setBounds(339, 21, 76, 28);
+			panel.add(lblNomeProgresso4);
+	
+			JLabel lblIconProgresso4 = new JLabel("Pagamento");
+			lblIconProgresso4.setIcon(new ImageIcon("..\\ReservasCinema\\src\\imagens\\cinza.png"));
+			lblIconProgresso4.setBounds(314, 25, 19, 19);
+			panel.add(lblIconProgresso4);
+	
+			JLabel lblIconProgresso5 = new JLabel("Pagamento");
+			lblIconProgresso5.setIcon(new ImageIcon("..\\ReservasCinema\\src\\imagens\\cinza.png"));
+			lblIconProgresso5.setBounds(429, 25, 19, 19);
+			panel.add(lblIconProgresso5);
+	
+			JLabel lblNomeProgresso5 = new JLabel("Recibos");
+			lblNomeProgresso5.setHorizontalAlignment(SwingConstants.LEFT);
+			lblNomeProgresso5.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+			lblNomeProgresso5.setBounds(456, 21, 51, 28);
+			panel.add(lblNomeProgresso5);
+	
+			switch (posicaoVerde) {
+			case 1: {
+				lblIconProgresso1.setIcon(new ImageIcon(
+						"..\\ReservasCinema\\src\\imagens\\verde.png"));
+				break;
+			}
+			case 2: {
+				lblIconProgresso2.setIcon(new ImageIcon(
+						"..\\ReservasCinema\\src\\imagens\\verde.png"));
+				break;
+			}
+			case 3: {
+				lblIconProgresso3.setIcon(new ImageIcon(
+						"..\\ReservasCinema\\src\\imagens\\verde.png"));
+				break;
+			}
+			case 4: {
+				lblIconProgresso4.setIcon(new ImageIcon(
+						"..\\ReservasCinema\\src\\imagens\\verde.png"));
+				break;
+			}
+			case 5: {
+				lblIconProgresso5.setIcon(new ImageIcon(
+						"..\\ReservasCinema\\src\\imagens\\verde.png"));
+				break;
+			}
+	
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + posicaoVerde);
+			}
+			
+			
+			//Verificação para não criar por duas vezes o cabeçalho
+			
+			if(cabecalhoCriado == entrarCriado) {
+				entrarCriado = true;
+			} else if (cabecalhoCriado == filmesCriado) {
+				filmesCriado = true;
+			} else if (cabecalhoCriado == assentosCriado) {
+				assentosCriado = true;
+			} else if (cabecalhoCriado == pagamentosCriado) {
+				pagamentosCriado = true;
+			} else if (cabecalhoCriado == finalizarCriado) {
+				finalizarCriado = true;
+			}
+			
+			
 		}
 
 	}
+
 
 }

@@ -12,7 +12,9 @@ import com.mysql.cj.protocol.Resultset;
 import com.mysql.cj.xdevapi.PreparableStatement;
 
 import entidades.Assento;
+import entidades.Compra;
 import entidades.Filme;
+import entidades.Usuario;
 
 public class AssentoDao {
 	
@@ -106,6 +108,39 @@ public class AssentoDao {
 		
 		
 		
+	}
+	
+	public String retornaCodigoAssento(int idAssento) {
+		
+		String insert = "SELECT codigo_assento FROM reserva_cinema.assento WHERE id = ?;";
+		
+		String codigoAssento = null;
+		
+		try {
+			
+			Connection con = getConexao();
+			PreparedStatement pst = con.prepareStatement(insert);
+			pst.setInt(1, idAssento);
+			
+			ResultSet rs = pst.executeQuery();
+
+			
+			if (rs.next()) {
+				
+				codigoAssento = rs.getString(1);
+				
+			}
+			
+			rs.close();
+			pst.close();
+			con.close();
+	
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return codigoAssento;
 	}
 	
 }

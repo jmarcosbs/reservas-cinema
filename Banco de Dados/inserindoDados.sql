@@ -1,9 +1,3 @@
-INSERT INTO usuario (nome, email, senha) VALUES
-('Milena', 'milena@gmail.com', '1234'),
-('Pedro', 'pedro@gmail.com', '1234'),
-('Padrão', 'padrao@gmail.com', '1234'),
-('Comum', 'comum@gmail.com', '1234');
-
 INSERT INTO filme (titulo, sinopse, valor_ingresso, horario) VALUES
 ('Divertidamente', 
 'Riley é uma garota divertida de 11 anos de idade, que deve enfrentar mudanças importantes em sua vida quando seus pais decidem deixar a sua cidade natal, no estado de Minnesota, para viver em San Francisco.',
@@ -38,13 +32,3 @@ INSERT INTO assento (codigo_assento, FK_filme_id, ocupado) VALUES
 ('B1', 4, 0),('B2', 4, 0),('B3', 4, 0),('B4', 4, 0),
 ('C1', 4, 0),('C2', 4, 0),('C3', 4, 0),('C4', 4, 0),
 ('D1', 4, 0),('D2', 4, 0),('D3', 4, 0),('D4', 4, 0);
-
-INSERT INTO compra (valor_compra) VALUES
-(70.00);
-
-INSERT INTO ingresso (FK_usuario_id, FK_compra_id, FK_filme_id, fk_assento_id) VALUES
-(1, 1, 1, 1),
-(1, 1, 1, 2);
-
-UPDATE assento SET ocupado = 1 WHERE id = 1;
-UPDATE assento SET ocupado = 1 WHERE id = 2;

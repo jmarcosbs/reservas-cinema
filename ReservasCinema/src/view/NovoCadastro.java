@@ -47,6 +47,7 @@ public class NovoCadastro extends JFrame {
 				try {
 					NovoCadastro frame = new NovoCadastro();
 					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -58,9 +59,11 @@ public class NovoCadastro extends JFrame {
 	 * Create the frame.
 	 */
 	public NovoCadastro() {
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 333, 405);
+		setBounds(100, 100, 333, 427);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
@@ -68,14 +71,14 @@ public class NovoCadastro extends JFrame {
 		
 		txtNome = new JTextField();
 		txtNome.setBackground(new Color(217, 217, 217));
-		txtNome.setBounds(54, 93, 194, 20);
+		txtNome.setBounds(63, 93, 194, 20);
 		contentPane.add(txtNome);
 		txtNome.setColumns(10);
 		
 		txtEmail = new JTextField();
 		txtEmail.setBackground(new Color(217, 217, 217));
 		txtEmail.setColumns(10);
-		txtEmail.setBounds(54, 151, 194, 20);
+		txtEmail.setBounds(63, 149, 194, 20);
 		contentPane.add(txtEmail);
 		
 		JButton btnCadastrar = new JButton("Cadastrar");
@@ -94,7 +97,7 @@ public class NovoCadastro extends JFrame {
 		});
 		btnCadastrar.setForeground(new Color(255, 255, 255));
 		btnCadastrar.setBackground(new Color(136, 191, 152));
-		btnCadastrar.setBounds(100, 296, 124, 23);
+		btnCadastrar.setBounds(99, 300, 124, 41);
 		contentPane.add(btnCadastrar);
 	
 		
@@ -116,7 +119,7 @@ public class NovoCadastro extends JFrame {
 			
 		});
 		
-		pssSenha.setBounds(54, 209, 194, 20);
+		pssSenha.setBounds(63, 205, 194, 20);
 
 		contentPane.add(pssSenha);
 		
@@ -158,7 +161,7 @@ public class NovoCadastro extends JFrame {
 				
 			}
 		});
-		lblTenhoCadastro.setBounds(10, 341, 296, 14);
+		lblTenhoCadastro.setBounds(10, 363, 296, 14);
 		contentPane.add(lblTenhoCadastro);
 		
 		JLabel lblNovoCadastro = new JLabel("Novo Cadastro");
@@ -167,32 +170,22 @@ public class NovoCadastro extends JFrame {
 		lblNovoCadastro.setBounds(74, 21, 149, 23);
 		contentPane.add(lblNovoCadastro);
 		
-	
-		JLabel lblNome = new JLabel("Nome Completo:");
-		lblNome.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNome.setFont(new Font("Bahnschrift", Font.BOLD, 13));
-		lblNome.setBounds(50, 68, 114, 14);
-		contentPane.add(lblNome);
-		
 		JLabel lblEmail = new JLabel("E-mail:");
+		lblEmail.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEmail.setFont(new Font("Bahnschrift", Font.BOLD, 13));
-		lblNome.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNome.setFont(new Font("Bahnschrift", Font.BOLD, 13));
-		lblEmail.setBounds(54, 126, 46, 14);
+		lblEmail.setBounds(63, 124, 46, 14);
 		contentPane.add(lblEmail);
 		
 		JLabel lblSenha = new JLabel("Senha:");
+		lblSenha.setHorizontalAlignment(SwingConstants.LEFT);
 		lblSenha.setFont(new Font("Bahnschrift", Font.BOLD, 13));
-		lblNome.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNome.setFont(new Font("Bahnschrift", Font.BOLD, 13));
-		lblSenha.setBounds(54, 184, 46, 14);
+		lblSenha.setBounds(63, 180, 46, 14);
 		contentPane.add(lblSenha);
 		
 		JLabel lblConfirmeASenha = new JLabel("Confirme a senha:");
+		lblConfirmeASenha.setHorizontalAlignment(SwingConstants.LEFT);
 		lblConfirmeASenha.setFont(new Font("Bahnschrift", Font.BOLD, 13));
-		lblNome.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNome.setFont(new Font("Bahnschrift", Font.BOLD, 13));
-		lblConfirmeASenha.setBounds(54, 240, 178, 14);
+		lblConfirmeASenha.setBounds(63, 236, 178, 14);
 		contentPane.add(lblConfirmeASenha);
 		
 		pssRepeteSenha = new JPasswordField();
@@ -205,10 +198,16 @@ public class NovoCadastro extends JFrame {
 				
 			}
 		});
-		pssRepeteSenha.setBounds(54, 265, 194, 20);
+		pssRepeteSenha.setBounds(63, 261, 194, 20);
 		pssRepeteSenha.setBackground(new Color(217, 217, 217));
 
 		contentPane.add(pssRepeteSenha);
+		
+		JLabel lblNome = new JLabel("Nome:");
+		lblNome.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNome.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		lblNome.setBounds(63, 68, 46, 14);
+		contentPane.add(lblNome);
 		
 		pssRepeteSenha.getDocument().addDocumentListener(new DocumentListener() {
 
