@@ -118,7 +118,33 @@ public class Main {
 
 		panel.add(panelAssentos, "painelAssentos");
 		panelAssentos.setLayout(null);
-		panelEntrar.setBackground(new Color(255, 255, 255));
+		
+		JLabel lblLegenda = new JLabel("Legenda:");
+		lblLegenda.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		lblLegenda.setBounds(223, 313, 126, 14);
+		panelAssentos.add(lblLegenda);
+		
+		JLabel lblOcupado = new JLabel("Ocupado");
+		lblOcupado.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		lblOcupado.setBounds(270, 344, 79, 14);
+		panelAssentos.add(lblOcupado);
+		
+		JLabel lblDisponivel = new JLabel("Disponível");
+		lblDisponivel.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		lblDisponivel.setBounds(270, 364, 79, 14);
+		panelAssentos.add(lblDisponivel);
+		
+		JButton btnOcupado = new JButton("");
+		Color vermelho = Color.decode("#fd4d4d");
+		btnOcupado.setBackground(vermelho);
+		btnOcupado.setBounds(223, 335, 43, 23);
+		panelAssentos.add(btnOcupado);
+		
+		JButton btnDisponivel = new JButton("");
+		Color verde = Color.decode("#33ff66");		
+		btnDisponivel.setBackground(verde);
+		btnDisponivel.setBounds(223, 359, 43, 23);
+		panelAssentos.add(btnDisponivel);
 
 		panel.add(panelPagamento, "painelPagamento");
 		panelPagamento.setLayout(null);
@@ -156,7 +182,7 @@ public class Main {
 
 				usuarioLogado = usuarioDao.LogarUsuario(email, senha);
 				if (usuarioLogado != null) {
-					JOptionPane.showMessageDialog(null, "Bem-vindo ");
+					JOptionPane.showMessageDialog(null, "Bem-vindo(a), " + usuarioLogado.getNome() + "!");
 					CardLayout c1 = (CardLayout) panel.getLayout();
 					c1.show(panel, "painelFilmes");
 					criarFilmes();
@@ -172,7 +198,7 @@ public class Main {
 		panelEntrar.add(btnLogin);
 
 		txtEmail = new JTextField();
-		txtEmail.setText("admin");
+//		txtEmail.setText("admin");
 		txtEmail.setBackground(new Color(217, 217, 217));
 		txtEmail.setBounds(167, 154, 196, 34);
 		txtEmail.setColumns(10);
@@ -190,13 +216,13 @@ public class Main {
 		lblEmail.setBounds(150, 125, 76, 34);
 		panelEntrar.add(lblEmail);
 
-		JLabel lblSenha = new JLabel("Senha");
+		JLabel lblSenha = new JLabel("Senha:");
 		lblSenha.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSenha.setFont(new Font("Bahnschrift", Font.BOLD, 13));
 		lblSenha.setBounds(150, 201, 76, 34);
 		panelEntrar.add(lblSenha);
 
-		JLabel lblSemCadastro = new JLabel("Ainda não tenho cadastro");
+		JLabel lblSemCadastro = new JLabel("Criar cadastro");
 		lblSemCadastro.setFont(new Font("Bahnschrift", Font.BOLD, 13));
 		lblSemCadastro.addMouseListener(new MouseAdapter() {
 			@Override
@@ -214,7 +240,7 @@ public class Main {
 		panelEntrar.add(lblSemCadastro);
 
 		pssSenha = new JPasswordField();
-		pssSenha.setText("admin");
+//		pssSenha.setText("admin");
 		pssSenha.setColumns(10);
 		pssSenha.setBackground(new Color(217, 217, 217));
 		pssSenha.setBounds(167, 228, 196, 34);
@@ -445,23 +471,22 @@ public class Main {
 		adicionarCabecalho(panelPagamento, 4);
 
 		JRadioButton rdbtnPix = new JRadioButton("Pix");
-		rdbtnPix.setBounds(194, 99, 109, 23);
+		rdbtnPix.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		rdbtnPix.setBounds(194, 150, 109, 23);
 		panelPagamento.add(rdbtnPix);
 		bgPagamento.add(rdbtnPix);
 
-		JRadioButton rdbtnCredito = new JRadioButton("Credito");
-		rdbtnCredito.setBounds(194, 125, 109, 23);
+		JRadioButton rdbtnCredito = new JRadioButton("Cartão de Crédito");
+		rdbtnCredito.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		rdbtnCredito.setBounds(194, 175, 150, 30);
 		panelPagamento.add(rdbtnCredito);
 		bgPagamento.add(rdbtnCredito);
 
-		JRadioButton rdbtnDebito = new JRadioButton("Debito");
-		rdbtnDebito.setBounds(194, 156, 109, 23);
+		JRadioButton rdbtnDebito = new JRadioButton("Cartão de Débito");
+		rdbtnDebito.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		rdbtnDebito.setBounds(194, 200, 150, 30);
 		panelPagamento.add(rdbtnDebito);
 		bgPagamento.add(rdbtnDebito);
-
-		JLabel lblPagamento = new JLabel("Pagamento");
-		lblPagamento.setBounds(50, 49, 109, 14);
-		panelPagamento.add(lblPagamento);
 
 		JButton btnPgAvancar = new JButton("Avançar");
 		btnPgAvancar.setEnabled(false);
@@ -606,18 +631,30 @@ public class Main {
 						if (botao.getText() == assento.getCodigoAssento()) {
 
 							botao.setEnabled(false);
-
-						}
+							Color vermelho = Color.decode("#fd4d4d");
+							botao.setBackground(vermelho);
+						} 
+	                    }
 
 					}
 
-				}
+				} else if (assento.getOcupado() == 0) {
+
+					for (int i = 0; i < botoesAssento.length; i++) {
+
+						for (int j = 0; j < botoesAssento.length; j++) {
+					JToggleButton botao = botoesAssento[i][j];
+					Color verde = Color.decode("#33ff66");
+					botao.setBackground(verde);
+			} 
+
 
 			}
 
 		}
-
+		}
 	}
+	
 
 	public void finalizarCompra() {
 
@@ -730,5 +767,4 @@ public class Main {
 		}
 
 	}
-
 }
