@@ -167,7 +167,7 @@ public class Main {
 
 				usuarioLogado = usuarioDao.LogarUsuario(email, senha);
 				if (usuarioLogado != null) {
-					JOptionPane.showMessageDialog(null, "Bem-vindo ");
+					JOptionPane.showMessageDialog(null, "Bem-vindo(a), "+ usuarioLogado.getNome() + "!");
 					CardLayout c1 = (CardLayout) panel.getLayout();
 					c1.show(panel, "painelFilmes");
 					criarFilmes();
@@ -183,7 +183,7 @@ public class Main {
 		panelEntrar.add(btnLogin);
 
 		txtEmail = new JTextField();
-		txtEmail.setText("admin");
+	//	txtEmail.setText("admin");
 		txtEmail.setBackground(new Color(217, 217, 217));
 		txtEmail.setBounds(167, 154, 196, 34);
 		txtEmail.setColumns(10);
@@ -201,13 +201,13 @@ public class Main {
 		lblEmail.setBounds(150, 125, 76, 34);
 		panelEntrar.add(lblEmail);
 
-		JLabel lblSenha = new JLabel("Senha");
+		JLabel lblSenha = new JLabel("Senha:");
 		lblSenha.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSenha.setFont(new Font("Bahnschrift", Font.BOLD, 13));
 		lblSenha.setBounds(150, 201, 76, 34);
 		panelEntrar.add(lblSenha);
 
-		JLabel lblSemCadastro = new JLabel("Ainda não tenho cadastro");
+		JLabel lblSemCadastro = new JLabel("Criar cadastro");
 		lblSemCadastro.setFont(new Font("Bahnschrift", Font.BOLD, 13));
 		lblSemCadastro.addMouseListener(new MouseAdapter() {
 			@Override
@@ -225,7 +225,7 @@ public class Main {
 		panelEntrar.add(lblSemCadastro);
 
 		pssSenha = new JPasswordField();
-		pssSenha.setText("admin");
+	//	pssSenha.setText("admin");
 		pssSenha.setColumns(10);
 		pssSenha.setBackground(new Color(217, 217, 217));
 		pssSenha.setBounds(167, 228, 196, 34);
@@ -236,6 +236,12 @@ public class Main {
 	public void criarFilmes() {
 
 		adicionarCabecalho(panelFilmes, 2, filmesCriado);
+		
+		JLabel lblEscolhaFilme = new JLabel("Escolha seu filme:");
+		lblEscolhaFilme.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		lblEscolhaFilme.setBounds(200, 50, 150, 30);
+	    panelFilmes.add(lblEscolhaFilme);
+
 
 		JLabel lblFilme1 = new JLabel("New label");
 		lblFilme1.setIcon(new ImageIcon("src\\imagens\\divertidamente.png"));
@@ -391,6 +397,11 @@ public class Main {
 
 		adicionarCabecalho(panelAssentos, 3, assentosCriado);
 		
+		JLabel lblEscolhaAssento = new JLabel("Escolha seu assento:");
+	    lblEscolhaAssento.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+	    lblEscolhaAssento.setBounds(200, 50, 150, 30);
+	    panelAssentos.add(lblEscolhaAssento);
+		
 		JButton btnFilmeAvancar_1 = new JButton("Avançar");
 		btnFilmeAvancar_1.setEnabled(false);
 		btnFilmeAvancar_1.addActionListener(new ActionListener() {
@@ -441,6 +452,8 @@ public class Main {
 			}
 
 			desabilitaAssentosOcupados();
+			adicionaLegenda();
+
 
 			JButton btnFilmeVoltar_1 = new JButton("Voltar");
 			btnFilmeVoltar_1.addActionListener(new ActionListener() {
@@ -468,19 +481,19 @@ public class Main {
 
 		JRadioButton rdbtnPix = new JRadioButton("Pix");
 		rdbtnPix.setFont(new Font("Bahnschrift", Font.BOLD, 13));
-		rdbtnPix.setBounds(270, 140, 109, 23);
+		rdbtnPix.setBounds(194, 150, 109, 23);
 		panelPagamento.add(rdbtnPix);
 		bgPagamento.add(rdbtnPix);
 
-		JRadioButton rdbtnCredito = new JRadioButton("Credito");
+		JRadioButton rdbtnCredito = new JRadioButton("Cartão de Crédito");
 		rdbtnCredito.setFont(new Font("Bahnschrift", Font.BOLD, 13));
-		rdbtnCredito.setBounds(270, 180, 109, 23);
+		rdbtnCredito.setBounds(194, 175, 150, 30);
 		panelPagamento.add(rdbtnCredito);
 		bgPagamento.add(rdbtnCredito);
 
-		JRadioButton rdbtnDebito = new JRadioButton("Debito");
+		JRadioButton rdbtnDebito = new JRadioButton("Cartão de Débito");
 		rdbtnDebito.setFont(new Font("Bahnschrift", Font.BOLD, 13));
-		rdbtnDebito.setBounds(270, 220, 109, 23);
+		rdbtnDebito.setBounds(194, 200, 150, 30);
 		panelPagamento.add(rdbtnDebito);
 		bgPagamento.add(rdbtnDebito);
 
@@ -618,33 +631,58 @@ public class Main {
 
 	}
 
-	public void desabilitaAssentosOcupados() {
-
-		for (Assento assento : listaAssentos) {
-
-			if (assento.getOcupado() == 1) {
+	//esse metodo vai desabilitar e dar cor
+		public void desabilitaAssentosOcupados() {
+			for (Assento assento : listaAssentos) {
+				String codigoAssento = assento.getCodigoAssento();
+				boolean ocupado = (assento.getOcupado() == 1);
 
 				for (int i = 0; i < botoesAssento.length; i++) {
-
-					for (int j = 0; j < botoesAssento.length; j++) {
-
+					for (int j = 0; j < botoesAssento[i].length; j++) {
 						JToggleButton botao = botoesAssento[i][j];
+						if (botao.getText().equals(codigoAssento)) { 
+							botao.setEnabled(!ocupado);
 
-						if (botao.getText() == assento.getCodigoAssento()) {
-
-							botao.setEnabled(false);
-
+							if (ocupado) {
+								botao.setBackground(Color.decode("#fd4d4d"));
+							} else {
+								botao.setBackground(Color.decode("#33ff66"));
+							}
 						}
-
 					}
-
 				}
-
 			}
-
 		}
 
-	}
+		public void adicionaLegenda() {
+			JLabel lblLegenda = new JLabel("Legenda:");
+			lblLegenda.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+			lblLegenda.setBounds(223, 313, 126, 14);
+			panelAssentos.add(lblLegenda);
+
+			JLabel lblOcupado = new JLabel("Ocupado");
+			lblOcupado.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+			lblOcupado.setBounds(270, 344, 79, 14);
+			panelAssentos.add(lblOcupado);
+
+			JLabel lblDisponivel = new JLabel("Disponível");
+			lblDisponivel.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+			lblDisponivel.setBounds(270, 364, 79, 14);
+			panelAssentos.add(lblDisponivel);
+
+			JButton btnOcupado = new JButton("");
+			Color vermelho = Color.decode("#fd4d4d");
+			btnOcupado.setBackground(vermelho);
+			btnOcupado.setBounds(223, 335, 43, 23);
+			panelAssentos.add(btnOcupado);
+
+			JButton btnDisponivel = new JButton("");
+			Color verde = Color.decode("#33ff66");
+			btnDisponivel.setBackground(verde);
+			btnDisponivel.setBounds(223, 359, 43, 23);
+			panelAssentos.add(btnDisponivel);
+		}
+
 
 	public void finalizarCompra() {
 
