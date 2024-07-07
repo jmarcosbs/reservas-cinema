@@ -8,6 +8,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -28,7 +29,6 @@ import entidades.Filme;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -37,48 +37,52 @@ import javax.swing.ImageIcon;
 import javax.swing.ButtonGroup;
 import javax.swing.JToggleButton;
 import java.awt.Font;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.Toolkit;
 
 public class Main {
 
-	private JFrame frame;
+	// Declarando variáveis para uso em escopo global
+	
+	public JFrame frame;
 	private JTextField txtEmail;
 	private JPasswordField pssSenha;
+	
+	// Instanciando Daos
 	private UsuarioDao usuarioDao = new UsuarioDao();
 	private AssentoDao assentoDao = new AssentoDao();
 	private IngressoDao ingressoDao = new IngressoDao();
 	private CompraDao compraDao = new CompraDao();
 	private FilmeDao filmeDao = new FilmeDao();
+	
+	// Instanciando entidades e atributos
 	private Usuario usuarioLogado;
-	private List<Filme> listaDeFilmes = filmeDao.listarFilmes();
+	private Filme filmeSelecionado = null;
+	private Compra compra;
+	private String formaPagamento;
+	
+	// Instanciando botões
 	private final ButtonGroup bgFilmes = new ButtonGroup();
 	private final ButtonGroup bgPagamento = new ButtonGroup();
-	private final ButtonGroup bgAssentos = new ButtonGroup();
-	
-	private Filme filmeSelecionado = null;
-	private List<Assento> listaAssentos;
 	private JToggleButton[][] botoesAssento = new JToggleButton[4][4];
-	private JPanel panel = new JPanel();
+	
+	// Criando listas
+	private List<Filme> listaDeFilmes = filmeDao.listarFilmes();
+	private List<Assento> listaAssentos;
+	private List<Assento> assentosSelecionados;
+	
+	// Instanciando JPanels
+	private JPanel panel =new JPanel();
 	private JPanel panelEntrar = new JPanel();
 	private JPanel panelFilmes = new JPanel();
 	private JPanel panelAssentos = new JPanel();
 	private JPanel panelPagamento = new JPanel();
 	private JPanel panelFinalizar = new JPanel();
-	private Compra compra;
-	private String formaPagamento;
-	private List<Assento> assentosSelecionados;
 	
-	private boolean entrarCriado = false;
-	private boolean filmesCriado = false;
-	private boolean assentosCriado = false;
-	private boolean pagamentosCriado = false;
-	private boolean finalizarCriado = false;
+	
 
+	
 	/**
 	 * Launch the application.
 	 */
@@ -109,7 +113,8 @@ public class Main {
 	private void initialize() {
 
 		frame = new JFrame();
-		frame.setBounds(100, 100, 560, 467);
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("..\\ReservasCinema\\src\\imagens\\movie.png"));
+		frame.setBounds(100, 100, 551, 437);
 		frame.getContentPane().setBackground(new Color(255, 255, 255));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -125,27 +130,27 @@ public class Main {
 
 		panel.add(panelFilmes, "painelFilmes");
 		panelFilmes.setLayout(null);
-		panelEntrar.setBackground(new Color(255, 255, 255));
+		panelFilmes.setBackground(new Color(255, 255, 255));
 
 		panel.add(panelAssentos, "painelAssentos");
 		panelAssentos.setLayout(null);
-		panelEntrar.setBackground(new Color(255, 255, 255));
+		panelAssentos.setBackground(new Color(255, 255, 255));
 
 		panel.add(panelPagamento, "painelPagamento");
 		panelPagamento.setLayout(null);
-		panelEntrar.setBackground(new Color(255, 255, 255));
+		panelPagamento.setBackground(new Color(255, 255, 255));
 
 		panel.add(panelFinalizar, "painelFinalizar");
 		panelFinalizar.setLayout(null);
-		panelEntrar.setBackground(new Color(255, 255, 255));
+		panelFinalizar.setBackground(new Color(255, 255, 255));
 
 		criarEntrar();
 
 	}
 
-	public void criarEntrar() {
+	public void criarEntrar() { // Cria o panel "entrar"
 
-		adicionarCabecalho(panelEntrar, 1, entrarCriado);
+		adicionarCabecalho(panelEntrar, 1);
 
 		JButton btnLogin = new JButton("Entrar");
 		btnLogin.addKeyListener(new KeyAdapter() {
@@ -167,10 +172,14 @@ public class Main {
 
 				usuarioLogado = usuarioDao.LogarUsuario(email, senha);
 				if (usuarioLogado != null) {
-					JOptionPane.showMessageDialog(null, "Bem-vindo ");
+					
+					// O usuarioLogado não ser nulo significa que as credenciais são válidas e o usuário foi retornado
+					
+					JOptionPane.showMessageDialog(null, "Bem-vindo(a), " + usuarioLogado.getNome());
 					CardLayout c1 = (CardLayout) panel.getLayout();
 					c1.show(panel, "painelFilmes");
 					criarFilmes();
+					
 				} else {
 					JOptionPane.showMessageDialog(null, "Informações inválidas");
 				}
@@ -180,31 +189,42 @@ public class Main {
 		btnLogin.setForeground(new Color(255, 255, 255));
 		btnLogin.setBackground(new Color(136, 191, 152));
 		btnLogin.setBounds(205, 292, 120, 42);
+		btnLogin.setBounds(centralizaX(btnLogin), 292, 120, 42);
 		panelEntrar.add(btnLogin);
 
 		txtEmail = new JTextField();
-		txtEmail.setText("admin");
 		txtEmail.setBackground(new Color(217, 217, 217));
 		txtEmail.setBounds(167, 154, 196, 34);
+		txtEmail.setBounds(centralizaX(txtEmail), 154, 196, 34);
 		txtEmail.setColumns(10);
 		panelEntrar.add(txtEmail);
+		
+		pssSenha = new JPasswordField();
+		pssSenha.setColumns(10);
+		pssSenha.setBackground(new Color(217, 217, 217));
+		pssSenha.setBounds(167, 228, 196, 34);
+		pssSenha.setBounds(centralizaX(pssSenha), 228, 196, 34);
+		panelEntrar.add(pssSenha);
 
 		JLabel titulo = new JLabel("Ingressos para o cinema");
 		titulo.setFont(new Font("Bahnschrift", Font.BOLD, 20));
 		titulo.setHorizontalAlignment(SwingConstants.CENTER);
 		titulo.setBounds(0, 75, 537, 34);
+		titulo.setBounds(centralizaX(titulo), 75, 537, 34);
 		panelEntrar.add(titulo);
 
 		JLabel lblEmail = new JLabel("E-mail:");
 		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEmail.setFont(new Font("Bahnschrift", Font.BOLD, 13));
-		lblEmail.setBounds(150, 125, 76, 34);
+		lblEmail.setBounds(150, 125, 45, 34);
+		lblEmail.setBounds(txtEmail.getX() - 37, 125, 120, 34);
 		panelEntrar.add(lblEmail);
 
-		JLabel lblSenha = new JLabel("Senha");
+		JLabel lblSenha = new JLabel("Senha:");
 		lblSenha.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSenha.setFont(new Font("Bahnschrift", Font.BOLD, 13));
-		lblSenha.setBounds(150, 201, 76, 34);
+		lblSenha.setBounds(150, 201, 45, 34);
+		lblSenha.setBounds(pssSenha.getX(), 201, 45, 34);
 		panelEntrar.add(lblSenha);
 
 		JLabel lblSemCadastro = new JLabel("Ainda não tenho cadastro");
@@ -212,9 +232,12 @@ public class Main {
 		lblSemCadastro.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
+				
+				// Chama janela de novo cadastro de usuário
 				NovoCadastro telaCadastro = new NovoCadastro();
+				telaCadastro.setLocationRelativeTo(null);
 				telaCadastro.setVisible(true);
+				telaCadastro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Não deixa encerrar o programa ao fechar a tela de cadastro, apenas a tela de cadastro é fechada
 
 			}
 		});
@@ -222,22 +245,21 @@ public class Main {
 		lblSemCadastro.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSemCadastro.setFont(new Font("Bahnschrift", Font.BOLD, 13));
 		lblSemCadastro.setBounds(0, 354, 537, 34);
+		lblSemCadastro.setBounds(centralizaX(lblSemCadastro), 354, 537, 34);
 		panelEntrar.add(lblSemCadastro);
 
-		pssSenha = new JPasswordField();
-		pssSenha.setText("admin");
-		pssSenha.setColumns(10);
-		pssSenha.setBackground(new Color(217, 217, 217));
-		pssSenha.setBounds(167, 228, 196, 34);
-		panelEntrar.add(pssSenha);
+
+		
 
 	}
 
 	public void criarFilmes() {
 
-		adicionarCabecalho(panelFilmes, 2, filmesCriado);
-
-		JLabel lblFilme1 = new JLabel("New label");
+		adicionarCabecalho(panelFilmes, 2);
+		
+		// Adicionando cartazes dos filme
+		
+		JLabel lblFilme1 = new JLabel("");
 		lblFilme1.setIcon(new ImageIcon("src\\imagens\\divertidamente.png"));
 		lblFilme1.setBounds(10, 68, 109, 171);
 		panelFilmes.add(lblFilme1);
@@ -247,12 +269,12 @@ public class Main {
 		lblFilme2.setBounds(143, 68, 109, 171);
 		panelFilmes.add(lblFilme2);
 
-		JLabel lblFilme3 = new JLabel("New label");
+		JLabel lblFilme3 = new JLabel("");
 		lblFilme3.setIcon(new ImageIcon("src\\imagens\\planeta.png"));
 		lblFilme3.setBounds(282, 68, 109, 171);
 		panelFilmes.add(lblFilme3);
 
-		JLabel lblFilme4 = new JLabel("New label");
+		JLabel lblFilme4 = new JLabel("");
 		lblFilme4.setIcon(new ImageIcon("src\\imagens\\assassino.png"));
 		lblFilme4.setBounds(417, 68, 109, 171);
 		panelFilmes.add(lblFilme4);
@@ -264,6 +286,12 @@ public class Main {
 
 				CardLayout c1 = (CardLayout) panel.getLayout();
 				c1.show(panel, "painelAssentos");
+				
+				// Elimina duplicidade dos paineis
+				panelAssentos.removeAll();
+				panelFilmes.removeAll();
+				panelPagamento.removeAll();
+				
 				criarAssentos();
 
 			}
@@ -274,6 +302,8 @@ public class Main {
 		btnFilmeAvancar.setBounds(411, 361, 99, 29);
 		panelFilmes.add(btnFilmeAvancar);
 
+		// Verifica a seleção do filme e corrensponde o filme selecionado a cada filme da lista e filmes
+		
 		JRadioButton rdbtnFilme1 = new JRadioButton(listaDeFilmes.get(0).getTitulo());
 		rdbtnFilme1.addActionListener(new ActionListener() {
 
@@ -336,7 +366,10 @@ public class Main {
 		rdbtnFilme4.setBounds(417, 250, 109, 23);
 		rdbtnFilme4.setFont(new Font("Bahnschrift", Font.BOLD, 11));
 		panelFilmes.add(rdbtnFilme4);
-
+		
+		
+		// Dados dos filmes
+		
 		JLabel lblPreco1 = new JLabel("Preço: R$" + listaDeFilmes.get(0).getValorIngresso());
 		lblPreco1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblPreco1.setFont(new Font("Bahnschrift", Font.BOLD, 11));
@@ -389,13 +422,18 @@ public class Main {
 
 	public void criarAssentos() {
 
-		adicionarCabecalho(panelAssentos, 3, assentosCriado);
+		adicionarCabecalho(panelAssentos, 3);
 		
-		JButton btnFilmeAvancar_1 = new JButton("Avançar");
-		btnFilmeAvancar_1.setEnabled(false);
-		btnFilmeAvancar_1.addActionListener(new ActionListener() {
+		JButton btnAssentoAvancar = new JButton("Avançar");
+		btnAssentoAvancar.setEnabled(false);
+		btnAssentoAvancar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				
+				// Elimina duplicidade dos paineis
+				panelFilmes.removeAll();
+				panelAssentos.removeAll();
+				panelPagamento.removeAll();
+				
 				CardLayout c1 = (CardLayout) panel.getLayout();
 				c1.show(panel, "painelPagamento");
 				assentosSelecionados = assentosSelecionado();
@@ -404,57 +442,39 @@ public class Main {
 		});
 		
 
-		btnFilmeAvancar_1.setForeground(new Color(255, 255, 255));
-		btnFilmeAvancar_1.setBackground(new Color(136, 191, 152));
-		btnFilmeAvancar_1.setBounds(421, 368, 89, 23);
-		panelAssentos.add(btnFilmeAvancar_1);
-
+		btnAssentoAvancar.setForeground(new Color(255, 255, 255));
+		btnAssentoAvancar.setBackground(new Color(136, 191, 152));
+		btnAssentoAvancar.setBounds(421, 368, 89, 23);
+		panelAssentos.add(btnAssentoAvancar);
+		
+		
 		if (filmeSelecionado != null) {
-			listaAssentos = assentoDao.listaAssentos(filmeSelecionado);
+			
+			// A condição é para confirmar que algum filme foi selecionado antes de criar os assentos, pois a criação dos assentos depende do filme selecionado
+			criaBotoesAssento(filmeSelecionado, btnAssentoAvancar);
 
-			// Adiciona os botões representando os assentos
-			int k = 0;
-
-			for (int i = 0; i < 4; i++) {
-
-				for (int j = 0; j < 4; j++) {
-
-					String nomeAssento = String.valueOf(listaAssentos.get(k++).getCodigoAssento());
-					JToggleButton btn = new JToggleButton(nomeAssento);
-					btn.setFont(new Font("Tahoma", Font.PLAIN, 8));
-					btn.setBounds(162 + (55 * j), 80 + (i * 56), 45, 45);
-					botoesAssento[i][j] = btn;
-					panelAssentos.add(btn);
-
-					btn.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							if (btn.isSelected()) {
-								btnFilmeAvancar_1.setEnabled(true);
-							}
-						}
-					});
-
-						
-					}
-				}
+		}
+			
+		
+		JButton btnAssentoVoltar = new JButton("Voltar");
+		btnAssentoVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				// Elimina duplicidade dos paineis
+				panelAssentos.removeAll();
+				
+				criarFilmes();
+				
+				CardLayout c1 = (CardLayout) panel.getLayout();
+				c1.show(panel, "painelFilmes");
+				
 
 			}
-
-			desabilitaAssentosOcupados();
-
-			JButton btnFilmeVoltar_1 = new JButton("Voltar");
-			btnFilmeVoltar_1.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-
-					CardLayout c1 = (CardLayout) panel.getLayout();
-					c1.show(panel, "painelFilmes");
-
-				}
-			});
-			btnFilmeVoltar_1.setBounds(31, 368, 89, 23);
-			btnFilmeVoltar_1.setForeground(new Color(255, 255, 255));
-			btnFilmeVoltar_1.setBackground(new Color(192, 192, 192));
-			panelAssentos.add(btnFilmeVoltar_1);
+		});
+		btnAssentoVoltar.setBounds(31, 368, 89, 23);
+		btnAssentoVoltar.setForeground(new Color(255, 255, 255));
+		btnAssentoVoltar.setBackground(new Color(192, 192, 192));
+		panelAssentos.add(btnAssentoVoltar);
 
 	
 
@@ -464,7 +484,7 @@ public class Main {
 
 	public void criarPagamento() {
 
-		adicionarCabecalho(panelPagamento, 4, pagamentosCriado);
+		adicionarCabecalho(panelPagamento, 4);
 
 		JRadioButton rdbtnPix = new JRadioButton("Pix");
 		rdbtnPix.setFont(new Font("Bahnschrift", Font.BOLD, 13));
@@ -493,23 +513,32 @@ public class Main {
 		btnPgAvancar.setEnabled(false);
 		btnPgAvancar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				// Abre caixa de confirmação antes de finalizar a compra
+				int resposta = JOptionPane.showConfirmDialog(null, "Gostaria de confirmar sua compra?", "Confirme sua compra?", JOptionPane.YES_NO_OPTION);
+				
+				if(JOptionPane.YES_OPTION == resposta) {
+					
+					CardLayout c1 = (CardLayout) panel.getLayout();
+					c1.show(panel, "painelFinalizar");
+					
+					// atribui a forma de pagamento à variável para ser usada para inserir compras
+					if (rdbtnPix.isSelected()) {
+						formaPagamento = "pix";
+					} else if (rdbtnCredito.isSelected()) {
+						formaPagamento = "credito";
+					} else if (rdbtnDebito.isSelected()) {
+						formaPagamento = "debito";
+					} else {
+						formaPagamento = null;
+					}
 
-				CardLayout c1 = (CardLayout) panel.getLayout();
-				c1.show(panel, "painelFinalizar");
+					finalizarCompra();
 
-				if (rdbtnPix.isSelected()) {
-					formaPagamento = "pix";
-				} else if (rdbtnCredito.isSelected()) {
-					formaPagamento = "credito";
-				} else if (rdbtnDebito.isSelected()) {
-					formaPagamento = "debito";
-				} else {
-					formaPagamento = null;
+					criarFinalizar();
+					
 				}
-
-				finalizarCompra();
-
-				criarFinalizar();
+				
 
 			}
 		});
@@ -524,7 +553,6 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				if (rdbtnPix.isSelected()) {
 					btnPgAvancar.setEnabled(true);
-					filmeSelecionado = listaDeFilmes.get(1);
 				}
 			}
 		});
@@ -533,7 +561,7 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				if (rdbtnCredito.isSelected()) {
 					btnPgAvancar.setEnabled(true);
-					filmeSelecionado = listaDeFilmes.get(1);
+
 				}
 			}
 		});
@@ -542,7 +570,7 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				if (rdbtnDebito.isSelected()) {
 					btnPgAvancar.setEnabled(true);
-					filmeSelecionado = listaDeFilmes.get(1);
+
 				}
 			}
 		});
@@ -551,8 +579,11 @@ public class Main {
 		btnPgVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
+				panelPagamento.removeAll(); //Reseta o painel pagamento para não duplicá-lo
+				criarAssentos();
 				CardLayout c1 = (CardLayout) panel.getLayout();
 				c1.show(panel, "painelAssentos");
+				
 
 			}
 		});
@@ -565,7 +596,7 @@ public class Main {
 
 	public void criarFinalizar() {
 
-		adicionarCabecalho(panelFinalizar, 5, finalizarCriado);
+		adicionarCabecalho(panelFinalizar, 5);
 
 		JTextArea textArea = new JTextArea(ingressoDao.imprimeIngressos(compra, usuarioLogado, filmeSelecionado));
         textArea.setLineWrap(true);
@@ -573,19 +604,49 @@ public class Main {
         textArea.setWrapStyleWord(true);
         
         JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setBounds(42, 150, 455, 200);
+        scrollPane.setBounds(42, 130, 455, 200);
+        scrollPane.setBounds(centralizaX(scrollPane), 130, 455, 200);
         panelFinalizar.add(scrollPane);
         
-        JLabel lblNewLabel_1 = new JLabel("Compra efetuada com sucesso!");
-        lblNewLabel_1.setFont(new Font("Bahnschrift", Font.PLAIN, 23));
-        lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-        lblNewLabel_1.setBounds(10, 92, 517, 29);
-        panelFinalizar.add(lblNewLabel_1);
+        JLabel lblCompraFinalizada = new JLabel("Compra efetuada com sucesso!");
+        lblCompraFinalizada.setFont(new Font("Bahnschrift", Font.PLAIN, 23));
+        lblCompraFinalizada.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCompraFinalizada.setBounds(10, 92, 517, 29);
+        lblCompraFinalizada.setBounds(centralizaX(lblCompraFinalizada), 92, 517, 29);
+        panelFinalizar.add(lblCompraFinalizada);
+        
+        JButton btnCompraNovamente = new JButton("Compra novamente");
+		btnCompraNovamente.setForeground(Color.WHITE);
+		btnCompraNovamente.setBackground(new Color(136, 191, 152));
+		btnCompraNovamente.setBounds(200, 346, 170, 42);
+		btnCompraNovamente.setBounds(centralizaX(btnCompraNovamente), 346, 170, 42);
+		
+		panelFinalizar.add(btnCompraNovamente);
+		
+		btnCompraNovamente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				// Ao clicar em comprar novamente todas os paineis criados serão resetados
+				panelFilmes.removeAll();
+				panelAssentos.removeAll();
+				panelPagamento.removeAll();
+				panelFinalizar.removeAll();
+				
+				criarFilmes();
+				
+				CardLayout c1 = (CardLayout) panel.getLayout();
+				c1.show(panel, "painelFilmes");
+				
+				
+			}
+		});
 
 	}
 
 	public List<Assento> assentosSelecionado() {
 
+		// Função que gera uma lista de Assento referente aos botões JToggleButton que foram selecionados
+		
 		List<Assento> assentosSelecionado = new ArrayList<Assento>();
 
 		for (int i = 0; i < botoesAssento.length; i++) {
@@ -618,54 +679,31 @@ public class Main {
 
 	}
 
-	public void desabilitaAssentosOcupados() {
-
-		for (Assento assento : listaAssentos) {
-
-			if (assento.getOcupado() == 1) {
-
-				for (int i = 0; i < botoesAssento.length; i++) {
-
-					for (int j = 0; j < botoesAssento.length; j++) {
-
-						JToggleButton botao = botoesAssento[i][j];
-
-						if (botao.getText() == assento.getCodigoAssento()) {
-
-							botao.setEnabled(false);
-
-						}
-
-					}
-
-				}
-
-			}
-
-		}
-
-	}
 
 	public void finalizarCompra() {
-
+		
+		// Função que gera uma compra e a quantidade de ingressos com base na compra
+		
 		float valorIngresso = filmeSelecionado.getValorIngresso();
 		int quantidadeIngressos = assentosSelecionados.size();
 		float valorCompra = valorIngresso * quantidadeIngressos;
 
 		compra = compraDao.inserirCompra(valorCompra, formaPagamento);
-
-		for (Assento assento : assentosSelecionados) {
+		
+		for (Assento assento : assentosSelecionados) { //Para cada assento selecionado gera um ingresso
 
 			ingressoDao.inserirIngresso(usuarioLogado, compra, filmeSelecionado, assento);
+	
 			assentoDao.atualizarOcupado(assento);
 
 		}
 
 	}
 
-	public void adicionarCabecalho(JPanel panel, int posicaoVerde, boolean cabecalhoCriado) {
-		
-		if (cabecalhoCriado == false) {
+	public void adicionarCabecalho(JPanel panel, int posicaoVerde) {
+			
+			// Função que recebe o painel para ser adicionado o cabeçalho e qual das posições deverá ter o icone verde - Entrar = 1, Filmes = 2 etc...
+
 			JLabel lblIconProgresso1 = new JLabel("");
 			lblIconProgresso1.setIcon(new ImageIcon("..\\ReservasCinema\\src\\imagens\\cinza.png"));
 			lblIconProgresso1.setBounds(25, 25, 19, 19);
@@ -753,24 +791,79 @@ public class Main {
 			}
 			
 			
-			//Verificação para não criar por duas vezes o cabeçalho
 			
-			if(cabecalhoCriado == entrarCriado) {
-				entrarCriado = true;
-			} else if (cabecalhoCriado == filmesCriado) {
-				filmesCriado = true;
-			} else if (cabecalhoCriado == assentosCriado) {
-				assentosCriado = true;
-			} else if (cabecalhoCriado == pagamentosCriado) {
-				pagamentosCriado = true;
-			} else if (cabecalhoCriado == finalizarCriado) {
-				finalizarCriado = true;
-			}
-			
-			
-		}
+		
 
 	}
+	
+	public void criaBotoesAssento(Filme filmeSelecionado, JButton ativarAvancar) {
+		
+	
+		listaAssentos = assentoDao.listaAssentos(this.filmeSelecionado); // Retorna uma lista de Assento com base no filme selecionado dado como parâmetro
+		
 
+		// Adiciona os botões representando os assentos
+		int k = 0;
 
+		for (int i = 0; i < 4; i++) {
+
+			for (int j = 0; j < 4; j++) {
+
+				String nomeAssento = String.valueOf(this.listaAssentos.get(k++).getCodigoAssento());
+				JToggleButton btn = new JToggleButton(nomeAssento);
+				btn.setFont(new Font("Tahoma", Font.PLAIN, 8));
+				btn.setBounds(162 + (55 * j), 80 + (i * 56), 45, 45);
+				botoesAssento[i][j] = btn;
+				panelAssentos.add(btn);
+
+				btn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						if (btn.isSelected()) {
+							ativarAvancar.setEnabled(true);
+						}
+					}
+				});
+
+					
+				}
+			}
+		
+		//Desabilita botões ocupados
+		
+		for (Assento assento : this.listaAssentos) {
+
+			if (assento.getOcupado() == 1) {
+
+				for (int i = 0; i < botoesAssento.length; i++) {
+
+					for (int j = 0; j < botoesAssento.length; j++) {
+
+						JToggleButton botao = botoesAssento[i][j];
+
+						if (botao.getText() == assento.getCodigoAssento()) {
+
+							botao.setEnabled(false);
+
+						}
+
+					}
+
+				}
+
+			}
+
+		}
+		
+	}
+
+	
+	public int centralizaX (JComponent componenteParaCentralizar) {
+		
+		// Função que centraliza posição X de qualquer componente
+		
+		int xCentralizado = (frame.getWidth() / 2) - (componenteParaCentralizar.getWidth() / 2) - 9;
+		
+		return xCentralizado;
+		
+	}
 }

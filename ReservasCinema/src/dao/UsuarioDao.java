@@ -39,6 +39,8 @@ public class UsuarioDao {
 	
 	public int inserirUsuario(Usuario usuario) {
 		
+		// Função que insere um usuario no banco de dados e retorna o id do mesmo
+		
 		String insert = "INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)";
 		
 		try {
@@ -70,7 +72,7 @@ public class UsuarioDao {
 	
 	public Usuario LogarUsuario(String email, String senha) {
 		
-		//Função que retorna um usuário caso ele for encontrado, se não for encontrado retorna um usuário nulo
+		// Função que retorna um usuário se ele for encontrado, se não for encontrado retorna um usuário nulo
 		
 		String sql = "SELECT * FROM reserva_cinema.usuario WHERE email = ?";
 		
