@@ -119,6 +119,7 @@ public class Main {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setLocationRelativeTo(null); // centraliza janela
+		frame.setTitle("Compra de ingressos para o cinema");
 
 		panel.setBounds(0, 0, 539, 415);
 		frame.getContentPane().add(panel);
@@ -238,6 +239,7 @@ public class Main {
 				telaCadastro.setLocationRelativeTo(null); // Centraliza tela
 				telaCadastro.setVisible(true);
 				telaCadastro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Não deixa encerrar o programa ao fechar a tela de cadastro, apenas a tela de cadastro é fechada
+				telaCadastro.setIconImage(Toolkit.getDefaultToolkit().getImage("..\\ReservasCinema\\src\\imagens\\movie.png"));
 
 			}
 		});
@@ -481,15 +483,13 @@ public class Main {
 		panelAssentos.add(lblDisponivel);
 
 		JButton btnOcupado = new JButton("");
-		Color vermelho = Color.decode("#fd4d4d");
-		btnOcupado.setBackground(vermelho);
-		btnOcupado.setBounds(233, 335, 17, 17);
+		btnOcupado.setBackground(Color.decode("#fd4d4d"));
+		btnOcupado.setBounds(233, 335, 10, 10);
 		panelAssentos.add(btnOcupado);
 
 		JButton btnDisponivel = new JButton("");
-		Color verde = Color.decode("#50c878");
-		btnDisponivel.setBackground(verde);
-		btnDisponivel.setBounds(233, 359, 17, 17);
+		btnDisponivel.setBackground(Color.decode("#50c878"));
+		btnDisponivel.setBounds(233, 359, 10, 10);
 		panelAssentos.add(btnDisponivel);
 		
 		JButton btnAssentoVoltar = new JButton("Voltar");
@@ -531,7 +531,7 @@ public class Main {
 
 		JRadioButton rdbtnCredito = new JRadioButton("Cartão de Crédito");
 		rdbtnCredito.setFont(new Font("Bahnschrift", Font.BOLD, 13));
-		rdbtnCredito.setBounds(270, 180, 139, 23);
+		rdbtnCredito.setBounds(270, 180, 150, 23);
 		rdbtnCredito.setBackground(Color.WHITE);
 		panelPagamento.add(rdbtnCredito);
 		bgPagamento.add(rdbtnCredito);
@@ -555,7 +555,7 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				
 				// Abre caixa de confirmação antes de finalizar a compra
-				int resposta = JOptionPane.showConfirmDialog(null, "Gostaria de confirmar sua compra?", "Confirme sua compra?", JOptionPane.YES_NO_OPTION);
+				int resposta = JOptionPane.showConfirmDialog(null, "Gostaria de confirmar sua compra?", "Confirme sua compra", JOptionPane.YES_NO_OPTION);
 				
 				if(JOptionPane.YES_OPTION == resposta) {
 					

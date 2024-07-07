@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -42,6 +43,8 @@ public class NovoCadastro extends JFrame {
 					NovoCadastro frame = new NovoCadastro();
 					frame.setVisible(true);
 					frame.setLocationRelativeTo(null);
+					frame.setIconImage(Toolkit.getDefaultToolkit().getImage("..\\ReservasCinema\\src\\imagens\\movie.png"));
+					frame.setTitle("Cadastrar usuário");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -161,7 +164,7 @@ public class NovoCadastro extends JFrame {
 		JLabel lblNovoCadastro = new JLabel("Novo Cadastro");
 		lblNovoCadastro.setFont(new Font("Bahnschrift", Font.BOLD, 20));
 		lblNovoCadastro.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNovoCadastro.setBounds(74, 21, 149, 23);
+		lblNovoCadastro.setBounds(86, 21, 149, 23);
 		contentPane.add(lblNovoCadastro);
 		
 		JLabel lblEmail = new JLabel("E-mail:");
