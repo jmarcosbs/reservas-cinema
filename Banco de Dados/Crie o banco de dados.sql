@@ -20,7 +20,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `reserva_cinema`.`usuario` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(70) NOT NULL,
-  `email` VARCHAR(30) NOT NULL,
+  `email` VARCHAR(30) NOT NULL UNIQUE,
   `senha` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
