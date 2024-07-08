@@ -484,12 +484,12 @@ public class Main {
 
 		JButton btnOcupado = new JButton("");
 		btnOcupado.setBackground(Color.decode("#fd4d4d"));
-		btnOcupado.setBounds(233, 335, 10, 10);
+		btnOcupado.setBounds(233, 335, 17, 17);
 		panelAssentos.add(btnOcupado);
 
 		JButton btnDisponivel = new JButton("");
 		btnDisponivel.setBackground(Color.decode("#50c878"));
-		btnDisponivel.setBounds(233, 359, 10, 10);
+		btnDisponivel.setBounds(233, 359, 17, 17);
 		panelAssentos.add(btnDisponivel);
 		
 		JButton btnAssentoVoltar = new JButton("Voltar");
