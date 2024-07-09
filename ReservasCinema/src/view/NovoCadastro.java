@@ -2,29 +2,24 @@ package view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
 import dao.UsuarioDao;
 import entidades.Usuario;
-
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.function.Function;
-
 import javax.swing.SwingConstants;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
@@ -48,6 +43,8 @@ public class NovoCadastro extends JFrame {
 					NovoCadastro frame = new NovoCadastro();
 					frame.setVisible(true);
 					frame.setLocationRelativeTo(null);
+					frame.setIconImage(Toolkit.getDefaultToolkit().getImage("..\\ReservasCinema\\src\\imagens\\movie.png"));
+					frame.setTitle("Cadastrar usuário");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -167,13 +164,13 @@ public class NovoCadastro extends JFrame {
 		JLabel lblNovoCadastro = new JLabel("Novo Cadastro");
 		lblNovoCadastro.setFont(new Font("Bahnschrift", Font.BOLD, 20));
 		lblNovoCadastro.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNovoCadastro.setBounds(74, 21, 149, 23);
+		lblNovoCadastro.setBounds(86, 21, 149, 23);
 		contentPane.add(lblNovoCadastro);
 		
 		JLabel lblEmail = new JLabel("E-mail:");
 		lblEmail.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEmail.setFont(new Font("Bahnschrift", Font.BOLD, 13));
-		lblEmail.setBounds(63, 124, 46, 14);
+		lblEmail.setBounds(63, 124, 135, 14);
 		contentPane.add(lblEmail);
 		
 		JLabel lblSenha = new JLabel("Senha:");

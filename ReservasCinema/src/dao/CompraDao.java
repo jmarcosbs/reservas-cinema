@@ -1,17 +1,12 @@
 package dao;
 
-import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import entidades.Assento;
 import entidades.Compra;
-import entidades.Filme;
-import entidades.Usuario;
 
 public class CompraDao {
 
@@ -44,6 +39,7 @@ public class CompraDao {
 	
 	public Compra inserirCompra(float valorCompra, String formaPagamento) {
 		
+		// Função que insere uma compra no banco de dados
 		
 		String insert = "INSERT INTO compra (valor_compra, forma_pagamento) VALUES (?, ?)";
 		

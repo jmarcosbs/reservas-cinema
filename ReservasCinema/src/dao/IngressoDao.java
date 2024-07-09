@@ -6,13 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
 import entidades.Assento;
 import entidades.Compra;
 import entidades.Filme;
-import entidades.Ingresso;
 import entidades.Usuario;
 
 public class IngressoDao {
@@ -78,6 +74,9 @@ public class IngressoDao {
 	
 	public String imprimeIngressos(Compra compra, Usuario usuario, Filme filmeSelecionado) {
 		
+		// Função que retorna um texto com os dados de todos ingressos comprados e seus respectivos detalhes
+		// Utilizada para imprimir os recibos no text area da painel Finalizar
+		
 		String insert = "SELECT * FROM reserva_cinema.ingresso WHERE FK_compra_id = ?;";
 		
 		String ingressosImpressos = "";
@@ -90,7 +89,6 @@ public class IngressoDao {
 			PreparedStatement pst = con.prepareStatement(insert);
 			pst.setInt(1, compra.getId());
 			
-			System.out.println("Id compra: " + compra.getId());
 			
 			ResultSet rs = pst.executeQuery();
 
@@ -101,6 +99,7 @@ public class IngressoDao {
 									+ "\nUsuario da compra: " + usuario.getNome()
 									+ "\nCompra: " + compra.getId()
 									+ "\nFilme: " + filmeSelecionado.getTitulo()
+									+ "\nPreço: R$" + filmeSelecionado.getValorIngresso()
 									+ "\nHorário: " + filmeSelecionado.getHorario()
 									+ "\nAssento: " + assentoDao.retornaCodigoAssento(rs.getInt(5))
 									+ "\n-------------------------------------------\n";
