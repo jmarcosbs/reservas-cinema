@@ -41,8 +41,6 @@ public class FilmeDao {
 	
 	public List<Filme> listarFilmes() {
 		
-		// Função que retorna uma lista de Filme dos filmes cadastrados no banco de dados
-		
 		List<Filme> listaDeFilmes = new ArrayList<Filme>();
 		
 		String sql = "SELECT * FROM reserva_cinema.filme";

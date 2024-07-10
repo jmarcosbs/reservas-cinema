@@ -1,16 +1,16 @@
 INSERT INTO filme (titulo, sinopse, valor_ingresso, horario) VALUES
 ('Divertidamente', 
 'Riley é uma garota divertida de 11 anos de idade, que deve enfrentar mudanças importantes em sua vida quando seus pais decidem deixar a sua cidade natal, no estado de Minnesota, para viver em San Francisco.',
-35.00, '11:00:00'),
+35.00, '15:30:00'),
 ('Bad Boys: Até o Fim', 
 'Bad Boys: Até o Fim é o quarto filme da icônica saga de ação estrelada por Will Smith e Martin Lawrence, iniciada em 1995 com Os Bad Boys, dirigido por Michael Bay. Desta vez, o longa conta com Adil El Arbi e Bilall Fallah na direção e o roteiro fica por conta de Chris Bremnerirá. ',
-30.00, '15:30:00'),
+35.00, '15:30:00'),
 ('Planeta dos Macacos: O Reinado', 
 'Planeta dos Macacos: O Reinado dá continuidade à saga dos primatas inteligentes, situando-se em um futuro distante após os eventos de Guerra pelo Planeta dos Macacos de 2017.',
-25.00, '10:30:00'),
+35.00, '15:30:00'),
 ('Assassino por Acaso', 
 'Gary Johnson (Glen Powell) é o assassino profissional mais procurado de Nova Orleans. No entanto, nem tudo é o que parece: para os seus clientes, Gary passa como um assassino de aluguel comum, mas, na verdade, ele trabalha para a polícia.',
-25.00, '09:30:00');
+35.00, '15:30:00');
 
 INSERT INTO assento (codigo_assento, FK_filme_id, ocupado) VALUES
 ('A1', 1, 0),('A2', 1, 0),('A3', 1, 0),('A4', 1, 0),
